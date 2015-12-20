@@ -19,7 +19,7 @@ public enum InitializationPolicy {
     case Xavier
 }
 
-/// Structure to define the shape of a matrix.
+/// Defines the two dimensional shape of a matrix.
 public typealias Shape = (rows: Int, columns: Int)
 
 public struct Matrix {
@@ -182,4 +182,31 @@ public func * (lhs: Matrix, rhs: Matrix) -> Matrix {
 
 public func * (lhs: Float, rhs: Matrix) -> Matrix {
     return Matrix.scale(lhs, a: rhs)
+}
+
+// MARK: - Extensions
+
+extension Matrix: CustomStringConvertible {
+    public var description: String {
+        var description = ""
+        
+        for i in 0..<rows {
+            let contents = (0..<columns).map{"\(self[i, $0])"}.joinWithSeparator("\t")
+            
+            switch (i, rows) {
+            case (0, 1):
+                description += "(\t\(contents)\t)"
+            case (0, _):
+                description += "⎛\t\(contents)\t⎞"
+            case (rows - 1, _):
+                description += "⎝\t\(contents)\t⎠"
+            default:
+                description += "⎜\t\(contents)\t⎥"
+            }
+            
+            description += "\n"
+        }
+        
+        return description
+    }
 }
