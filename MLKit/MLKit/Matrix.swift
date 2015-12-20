@@ -111,6 +111,7 @@ public struct Matrix {
     
     /// Returns the transpose of this matrix.
     private func transpose() -> Matrix {
+        let _ = GPU.deviceGPU
         var res = Matrix.zeros(self.columns, columns: self.rows)
         vDSP_mtrans(self.elements, 1, &(res.elements), 1, vDSP_Length(res.rows), vDSP_Length(res.columns))
         return res

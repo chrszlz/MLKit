@@ -12,6 +12,7 @@
 		939F73591C2627CC008937C1 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 939F73581C2627CC008937C1 /* Accelerate.framework */; };
 		93A2D1BC1C263B1D006AFE42 /* GPU.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A2D1BB1C263B1D006AFE42 /* GPU.swift */; };
 		93A2D1BE1C263E11006AFE42 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93A2D1BD1C263E11006AFE42 /* Metal.framework */; };
+		93C37C3B1C2654D100BF739E /* Shaders.metal in Resources */ = {isa = PBXBuildFile; fileRef = 93C37C3A1C2654D100BF739E /* Shaders.metal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +24,7 @@
 		939F73581C2627CC008937C1 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		93A2D1BB1C263B1D006AFE42 /* GPU.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPU.swift; sourceTree = "<group>"; };
 		93A2D1BD1C263E11006AFE42 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		93C37C3A1C2654D100BF739E /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 			children = (
 				939F73551C262251008937C1 /* Matrix.swift */,
 				93A2D1BB1C263B1D006AFE42 /* GPU.swift */,
+				93C37C3A1C2654D100BF739E /* Shaders.metal */,
 				939F734D1C2621DC008937C1 /* MLKit.h */,
 				939F734F1C2621DC008937C1 /* Info.plist */,
 			);
@@ -136,6 +139,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93C37C3B1C2654D100BF739E /* Shaders.metal in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

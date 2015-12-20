@@ -34,8 +34,13 @@ class GPU {
             fatalError("Unable to create MTLDevice.")
         }
         
-        guard let library = device.newDefaultLibrary() else {
-            fatalError("Unable to create MTLLibrary")
+        let bundle = NSBundle(forClass: GPU.self)
+        guard let shadersSource = bundle.pathForResource("Shaders", ofType: "metal") else {
+            fatalError("Unable to find shaders.")
+        }
+        
+        guard let library = try? device.newLibraryWithSource(shadersSource, options: nil) else {
+            fatalError("Unable to create MTLLibrary.")
         }
         
         self.device = device
