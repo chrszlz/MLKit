@@ -34,12 +34,7 @@ class GPU {
             fatalError("Unable to create MTLDevice.")
         }
         
-        let bundle = NSBundle(forClass: GPU.self)
-        guard let shadersSource = bundle.pathForResource("Shaders", ofType: "metal") else {
-            fatalError("Unable to find shaders.")
-        }
-        
-        guard let library = try? device.newLibraryWithSource(shadersSource, options: nil) else {
+        guard let library = device.newDefaultLibrary() else {
             fatalError("Unable to create MTLLibrary.")
         }
         
@@ -68,6 +63,47 @@ class GPU {
     
     /// Multiplies each element in `a` by `c`.
     func scaleMatrix(a: Matrix, by c: Float) ->  Matrix {
-        return a
+        // Get the shader and configure the command encoder.
+        guard let scalingFunction = library.newFunctionWithName("matrix_scale") else {
+            fatalError("No shader named matrix_scale.")
+        }
+        
+        guard let pipeline = try? device.newComputePipelineStateWithFunction(scalingFunction) else {
+            fatalError("Could not create compute pipeline with the matrx_scale shader.")
+        }
+        
+        let commandBuffer = commandQueue.commandBuffer()
+        let commandEncoder = commandBuffer.computeCommandEncoder()
+        commandEncoder.setComputePipelineState(pipeline)
+        
+        // Load the data into MTLBuffers the shader can access.
+        var scalingFactor = c
+        var input = a.elements
+        var output = [Float](count: a.elements.count, repeatedValue: 0)
+        let size = a.elements.count * sizeof(Float)
+        
+        let inputBuffer = device.newBufferWithBytes(&input, length: size, options: .StorageModePrivate)
+        let outputBuffer = device.newBufferWithBytes(&output, length: size, options: .StorageModePrivate)
+        commandEncoder.setBytes(&scalingFactor, length: sizeof(Float), atIndex: 0)
+        commandEncoder.setBuffer(inputBuffer, offset: 0, atIndex: 1)
+        commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 2)
+        
+        // Set the number of threads to be executed in parallel.
+        let threadsPerGroup = MTLSize(width: 16, height: 1, depth: 1)
+        let numThreadGroups = MTLSize(width: input.count/threadsPerGroup.width, height: 1, depth: 1)
+        commandEncoder.dispatchThreadgroups(threadsPerGroup, threadsPerThreadgroup: numThreadGroups)
+        
+        // Commit the computations to the GPU and wait for it to finish.
+        commandEncoder.endEncoding()
+        commandBuffer.commit()
+        commandBuffer.waitUntilCompleted()
+        
+        // Grab the data from the from the MTLBuffer and return the new scaled
+        // matrix.
+        let data = NSData(bytesNoCopy: outputBuffer.contents(), length: size, freeWhenDone: false)
+        var result = [Float](count: output.count, repeatedValue: 0)
+        data.getBytes(&result, length: size)
+        
+        return Matrix(rows: a.rows, columns: a.columns, elements: result)
     }
 }

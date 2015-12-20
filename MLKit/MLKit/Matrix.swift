@@ -125,7 +125,7 @@ public struct Matrix {
     /// `elements`.
     init(rows: Int, columns: Int, elements: [Float]) {
         guard rows > 0 && columns > 0 else {
-            fatalError("Invalid dimensions. Matrix must be at least 1x1")
+            fatalError("Invalid dimensions. Matrix must be at least 1x1.")
         }
         
         self.rows = rows
@@ -139,7 +139,6 @@ public struct Matrix {
     
     /// Returns the transpose of this matrix.
     private func transpose() -> Matrix {
-        let _ = GPU.deviceGPU
         var res = Matrix.zeros(self.columns, columns: self.rows)
         vDSP_mtrans(self.elements, 1, &(res.elements), 1, vDSP_Length(res.rows), vDSP_Length(res.columns))
         return res
@@ -162,7 +161,7 @@ public struct Matrix {
     
     /// Returns a `Matrix` where each element in `a` is multiplied by `s`.
     private static func scale(s: Float, a: Matrix) -> Matrix {
-        return a
+        return GPU.deviceGPU.scaleMatrix(a, by: s)
     }
 }
 
@@ -184,7 +183,8 @@ public func * (lhs: Float, rhs: Matrix) -> Matrix {
     return Matrix.scale(lhs, a: rhs)
 }
 
-// MARK: - Extensions
+
+// MARK: - CustomStringConvertible
 
 extension Matrix: CustomStringConvertible {
     public var description: String {

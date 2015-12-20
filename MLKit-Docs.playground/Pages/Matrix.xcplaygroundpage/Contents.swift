@@ -9,4 +9,5 @@ import MLKit
 let m = Matrix(elements: [[1,2],[3,4]])
 let res = m.T
 
+let res2 = 3.0 * m
 //: [Next](@next)

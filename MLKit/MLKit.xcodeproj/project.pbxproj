@@ -12,7 +12,7 @@
 		939F73591C2627CC008937C1 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 939F73581C2627CC008937C1 /* Accelerate.framework */; };
 		93A2D1BC1C263B1D006AFE42 /* GPU.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A2D1BB1C263B1D006AFE42 /* GPU.swift */; };
 		93A2D1BE1C263E11006AFE42 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93A2D1BD1C263E11006AFE42 /* Metal.framework */; };
-		93C37C3B1C2654D100BF739E /* Shaders.metal in Resources */ = {isa = PBXBuildFile; fileRef = 93C37C3A1C2654D100BF739E /* Shaders.metal */; };
+		93C37C3B1C2654D100BF739E /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93C37C3A1C2654D100BF739E /* Shaders.metal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -139,7 +139,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				93C37C3B1C2654D100BF739E /* Shaders.metal in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,6 +151,7 @@
 			files = (
 				93A2D1BC1C263B1D006AFE42 /* GPU.swift in Sources */,
 				939F73561C262251008937C1 /* Matrix.swift in Sources */,
+				93C37C3B1C2654D100BF739E /* Shaders.metal in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
