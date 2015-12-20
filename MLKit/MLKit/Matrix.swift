@@ -47,7 +47,7 @@ public struct Matrix {
         }
     }
     
-    /// The backing store for this matrix. Entries are stored in row major order.
+    /// The backing store for this matrix.
     var elements: [Float]
     
 
@@ -97,6 +97,10 @@ public struct Matrix {
     /// The designated initializer. Creates a `rows` by `columns` matrix with
     /// `elements`.
     init(rows: Int, columns: Int, elements: [Float]) {
+        guard rows > 0 && columns > 0 else {
+            fatalError("Invalid dimensions. Matrix must be at least 1x1")
+        }
+        
         self.rows = rows
         self.columns = columns
         self.elements = elements
