@@ -16,7 +16,34 @@ class GPU {
     /// The shared instance used to get access to the GPU.
     static let deviceGPU = GPU()
     
+    /// The abstraction for the GPU.
+    private let device: MTLDevice
+    
+    /// A collection of all the shaders in MLKit.
+    private let library: MTLLibrary
+    
+    /// The queue that contains all the commands that need to be executed on
+    /// the GPU.
+    private let commandQueue: MTLCommandQueue
+    
+    
+    // MARK: - Initializers
+    
+    init() {
+        guard let device = MTLCreateSystemDefaultDevice() else {
+            fatalError("Unable to create MTLDevice.")
+        }
+        
+        guard let library = device.newDefaultLibrary() else {
+            fatalError("Unable to create MTLLibrary")
+        }
+        
+        self.device = device
+        self.library = library
+        self.commandQueue = device.newCommandQueue()
+    }
 
+    
     // MARK: - Matrix Operations
     
     /// Returns `a` + `b`.
