@@ -19,6 +19,9 @@ public enum InitializationPolicy {
     case Xavier
 }
 
+/// Structure to define the shape of a matrix.
+public typealias Shape = (rows: Int, columns: Int)
+
 public struct Matrix {
     
     /// The number of rows in this matrix.
@@ -26,6 +29,9 @@ public struct Matrix {
     
     /// The number of columns in this matrix.
     public let columns: Int
+    
+    /// The shape of this matrix.
+    public let shape: Shape
     
     /// The transpose of this matrix.
     public var T: Matrix {
@@ -67,6 +73,15 @@ public struct Matrix {
         self.init(rows: rows, columns: columns, elements: elements)
     }
     
+    /// Initializes a `rows` by `columns` matrix using the specified `policy`.
+    ///
+    /// - parameter shape: The number of rows and columns in the matrix.
+    /// - parameter policy: The `InitializationPolicy` used to initialize each
+    ///                     element in the matrix.
+    public init(shape: Shape, policy: InitializationPolicy) {
+        self.init(rows: shape.rows, columns: shape.columns, policy: policy)
+    }
+    
     /// Initializes the matrix from a 2D array.
     ///
     /// - parameter elements: The 2D array used to initialize the matrix.
@@ -86,12 +101,24 @@ public struct Matrix {
         return Matrix(rows: rows, columns: columns, elements: elements)
     }
     
+    /// Returns a `rows` by `columns` matrix of zeros.
+    /// - parameter shape: The number of rows and columns in the matrix.
+    public static func zeros(shape: Shape) -> Matrix {
+        return self.zeros(rows: shape.rows, columns: shape.columns)
+    }
+    
     /// Returns a `rows` by `columns` matrix of ones.
     /// - parameter rows: The number of rows in the matrix.
     /// - parameter columns: The number of columns in the matrix.
     public static func ones(rows: Int, columns: Int) -> Matrix {
         let elements = [Float](count: rows * columns, repeatedValue: 1)
         return Matrix(rows: rows, columns: columns, elements: elements)
+    }
+    
+    /// Returns a `rows` by `columns` matrix of ones.
+    /// - parameter shape: The number of rows and columns in the matrix.
+    public static func ones(shape: Shape) -> Matrix {
+        return self.ones(rows: shape.rows, columns: shape.columns)
     }
     
     /// The designated initializer. Creates a `rows` by `columns` matrix with
@@ -104,6 +131,7 @@ public struct Matrix {
         self.rows = rows
         self.columns = columns
         self.elements = elements
+        self.shape = Shape(rows, columns)
     }
     
     
