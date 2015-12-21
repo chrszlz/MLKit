@@ -22,7 +22,7 @@ public enum InitializationPolicy {
 /// Defines the two dimensional shape of a matrix.
 public typealias Shape = (rows: Int, columns: Int)
 
-public struct Matrix {
+public struct Matrix : Equatable {
     
     /// The number of rows in this matrix.
     public let rows: Int
@@ -89,6 +89,8 @@ public struct Matrix {
         let rows = elements.count
         let columns = elements[0].count
         let elements = elements.flatMap { $0 }
+        
+        print(elements)
         
         self.init(rows: rows, columns: columns, elements: elements)
     }
@@ -160,8 +162,8 @@ public struct Matrix {
     }
     
     /// Returns a `Matrix` where each element in `a` is multiplied by `s`.
-    private static func scale(s: Float, a: Matrix) -> Matrix {
-        return GPU.deviceGPU.scaleMatrix(a, by: s)
+    private static func scale(a: Matrix, c: Float) -> Matrix {
+        return GPU.deviceGPU.scaleMatrix(a, by: c)
     }
 }
 
@@ -180,7 +182,17 @@ public func * (lhs: Matrix, rhs: Matrix) -> Matrix {
 }
 
 public func * (lhs: Float, rhs: Matrix) -> Matrix {
-    return Matrix.scale(lhs, a: rhs)
+    return Matrix.scale(rhs, c: lhs)
+}
+
+public func * (lhs: Matrix, rhs: Float) -> Matrix {
+    return Matrix.scale(lhs, c: rhs)
+}
+
+
+// MARK: - Equatable
+public func == (lhs: Matrix, rhs: Matrix) -> Bool {
+    return lhs.elements == rhs.elements
 }
 
 
