@@ -9,9 +9,9 @@
 #include <metal_stdlib>
 using namespace metal;
 
-kernel void matrix_scale(constant float &scalingFactor [[buffer(0)]],
-                        const device float *input [[buffer(1)]],
-                        device float *output [[buffer(2)]],
-                        uint gid [[thread_position_in_grid]]) {
+kernel void matrix_scale(constant float &scalingFactor [[ buffer(0) ]],
+                         const device float *input [[ buffer(1) ]],
+                         device float *output [[ buffer(2) ]],
+                         uint gid [[ thread_position_in_grid ]]) {
     output[gid] = scalingFactor * input[gid];
 }
