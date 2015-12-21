@@ -34,7 +34,12 @@ class GPU {
             fatalError("Unable to create MTLDevice.")
         }
         
-        guard let library = device.newDefaultLibrary() else {
+        let bundle = NSBundle(forClass: GPU.self)
+        guard let libraryPath = bundle.URLForResource("default", withExtension: "metallib", subdirectory: "Versions/A/Resources") else {
+            fatalError("Unable to find default metallib")
+        }
+        
+        guard let library = try? device.newLibraryWithFile(libraryPath.path!) else {
             fatalError("Unable to create MTLLibrary.")
         }
         
