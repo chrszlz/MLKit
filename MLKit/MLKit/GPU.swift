@@ -53,12 +53,20 @@ class GPU {
     
     /// Returns `a` + `b`.
     func addMatrices(a: Matrix, b: Matrix) -> Matrix {
-        return a
+        guard (a.rows == b.rows && a.columns == b.columns) else {
+            fatalError("Matricies must be the same shape to subract.")
+        }
+        
+        return applyMatrixMatrixFunction(function: "matrix_add", a: a, b: b)
     }
     
     /// Returns `a` - `b`.
     func subtractMatrices(a: Matrix, b: Matrix) -> Matrix {
-        return a
+        guard (a.rows == b.rows && a.columns == b.columns) else {
+            fatalError("Matricies must be the same shape to subract.")
+        }
+        
+        return applyMatrixMatrixFunction(function: "matrix_subtract", a: a, b: b)
     }
     
     /// Returns `a` * `b`.
