@@ -74,7 +74,7 @@ class GPU {
         }
         
         guard let pipeline = try? device.newComputePipelineStateWithFunction(scalingFunction) else {
-            fatalError("Could not create compute pipeline with the matrx_scale shader.")
+            fatalError("Could not create compute pipeline with the matrix_scale shader.")
         }
         
         let commandBuffer = commandQueue.commandBuffer()
@@ -95,8 +95,8 @@ class GPU {
         
         // Set the number of threads to be executed in parallel.
         let threadsPerGroup = MTLSize(width: 16, height: 1, depth: 1)
-        let numThreadGroups = MTLSize(width: input.count/threadsPerGroup.width, height: 1, depth: 1)
-        commandEncoder.dispatchThreadgroups(threadsPerGroup, threadsPerThreadgroup: numThreadGroups)
+        let numThreadGroups = MTLSize(width: (input.count+15)/threadsPerGroup.width, height: 1, depth: 1)
+        commandEncoder.dispatchThreadgroups(numThreadGroups, threadsPerThreadgroup: threadsPerGroup)
         
         // Commit the computations to the GPU and wait for it to finish.
         commandEncoder.endEncoding()
