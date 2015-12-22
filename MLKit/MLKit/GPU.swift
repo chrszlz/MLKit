@@ -11,7 +11,7 @@ import Metal
 
 /// GPU is a light weight wrapper around Metal to perform efficient
 /// matrix computations.
-class GPU {
+class GPU: MLComputeDevice {
     
     /// The shared instance used to get access to the GPU.
     static let deviceGPU = GPU()
@@ -59,7 +59,7 @@ class GPU {
     // MARK: - Matrix Operations
     
     /// Returns `a` + `b`.
-    func addMatrices(a: Matrix, b: Matrix) -> Matrix {
+    func addMatrices(a a: Matrix, b: Matrix) -> Matrix {
         guard (a.rows == b.rows && a.columns == b.columns) else {
             fatalError("Shape of a(\(a.shape) must be equal to shape of b(\(b.shape)")
         }
@@ -69,7 +69,7 @@ class GPU {
     }
     
     /// Returns `a` - `b`.
-    func subtractMatrices(a: Matrix, b: Matrix) -> Matrix {
+    func subtractMatrices(a a: Matrix, b: Matrix) -> Matrix {
         guard (a.rows == b.rows && a.columns == b.columns) else {
             fatalError("Shape of a(\(a.shape) must be equal to shape of b(\(b.shape)")
         }
@@ -79,7 +79,7 @@ class GPU {
     }
     
     /// Returns `a` * `b`.
-    func multiplyMatrices(a: Matrix, b: Matrix) -> Matrix {
+    func multiplyMatrices(a a: Matrix, b: Matrix) -> Matrix {
         return a
     }
     

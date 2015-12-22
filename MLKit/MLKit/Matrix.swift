@@ -146,12 +146,12 @@ public struct Matrix: Equatable {
     
     /// Returns the sum of the two matrices (a + b).
     private static func add(a: Matrix, b: Matrix) -> Matrix {
-        return GPU.deviceGPU.addMatrices(a, b: b)
+        return GPU.deviceGPU.addMatrices(a: a, b: b)
     }
     
     /// Returns the difference of the two matrices (a - b).
     private static func subtract(a: Matrix, b: Matrix) -> Matrix {
-        return GPU.deviceGPU.subtractMatrices(a, b: b)
+        return GPU.deviceGPU.subtractMatrices(a: a, b: b)
     }
     
     /// Returns the product of two matrices (a * b).
