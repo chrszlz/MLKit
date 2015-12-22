@@ -136,6 +136,11 @@ public struct Matrix : Equatable {
         self.shape = Shape(rows, columns)
     }
     
+    /// Returns a copy of the given matrix.
+    public func copy() -> Matrix {
+        return Matrix(rows: self.rows, columns: self.columns, elements: self.elements)
+    }
+    
     
     // MARK: - Operations
     

@@ -13,4 +13,7 @@ print(m)
 
 let res2 = 3.0 * m
 print(res2)
+
+let n = m.copy()
+m == n
 //: [Next](@next)
