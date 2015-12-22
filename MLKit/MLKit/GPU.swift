@@ -29,17 +29,24 @@ class GPU {
     
     // MARK: - Initializers
     
-    init() {
+    private init() {
         guard let device = MTLCreateSystemDefaultDevice() else {
             fatalError("Unable to create MTLDevice.")
         }
         
+        // When a project using Metal is built, all the .metal files will be compiled
+        // into a file called default.metallib. Normally, Metal will look in the
+        // app's main bundle for this resource, but Frameworks have a different
+        // bundle structure and store their resources under 
+        // /Versions/<Current Version>/Resources so grab the path to it and load
+        // from there.
         let bundle = NSBundle(forClass: GPU.self)
-        guard let libraryPath = bundle.URLForResource("default", withExtension: "metallib", subdirectory: "Versions/A/Resources") else {
+        guard let libraryURL = bundle.URLForResource("default", withExtension: "metallib", subdirectory: "Versions/A/Resources"),
+              let libraryPath = libraryURL.path else {
             fatalError("Unable to find default metallib")
         }
         
-        guard let library = try? device.newLibraryWithFile(libraryPath.path!) else {
+        guard let library = try? device.newLibraryWithFile(libraryPath) else {
             fatalError("Unable to create MTLLibrary.")
         }
         
@@ -69,14 +76,7 @@ class GPU {
     /// Multiplies each element in `a` by `c`.
     func scaleMatrix(a: Matrix, by c: Float) ->  Matrix {
         // Get the shader and configure the command encoder.
-        guard let scalingFunction = library.newFunctionWithName("matrix_scale") else {
-            fatalError("No shader named matrix_scale.")
-        }
-        
-        guard let pipeline = try? device.newComputePipelineStateWithFunction(scalingFunction) else {
-            fatalError("Could not create compute pipeline with the matrix_scale shader.")
-        }
-        
+        let pipeline = loadComputeShader("matrix_scale")
         let commandBuffer = commandQueue.commandBuffer()
         let commandEncoder = commandBuffer.computeCommandEncoder()
         commandEncoder.setComputePipelineState(pipeline)
@@ -110,5 +110,25 @@ class GPU {
         data.getBytes(&result, length: size)
         
         return Matrix(rows: a.rows, columns: a.columns, elements: result)
+    }
+    
+    
+    // MARK: - Private Methods
+    
+    /// Loads a compute shader from the GPU's shader library.
+    ///
+    /// - parameter shader: The name of the compute shader to load.
+    ///
+    /// - returns: The `MTLComputePipelineState` associated with `shader`.
+    private func loadComputeShader(shader: String) -> MTLComputePipelineState {
+        guard let scalingFunction = library.newFunctionWithName(shader) else {
+            fatalError("No shader named \(shader).")
+        }
+        
+        guard let pipeline = try? device.newComputePipelineStateWithFunction(scalingFunction) else {
+            fatalError("Could not create compute pipeline with the \(shader) shader.")
+        }
+        
+        return pipeline
     }
 }
