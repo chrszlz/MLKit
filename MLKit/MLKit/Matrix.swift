@@ -22,7 +22,7 @@ public enum InitializationPolicy {
 /// Defines the two dimensional shape of a matrix.
 public typealias Shape = (rows: Int, columns: Int)
 
-public struct Matrix {
+public struct Matrix: Equatable {
     
     /// The number of rows in this matrix.
     public let rows: Int
@@ -146,12 +146,12 @@ public struct Matrix {
     
     /// Returns the sum of the two matrices (a + b).
     private static func add(a: Matrix, b: Matrix) -> Matrix {
-        return a
+        return GPU.deviceGPU.addMatrices(a, b: b)
     }
     
     /// Returns the difference of the two matrices (a - b).
     private static func subtract(a: Matrix, b: Matrix) -> Matrix {
-        return a
+        return GPU.deviceGPU.subtractMatrices(a, b: b)
     }
     
     /// Returns the product of two matrices (a * b).
@@ -183,6 +183,12 @@ public func * (lhs: Float, rhs: Matrix) -> Matrix {
     return Matrix.scale(lhs, a: rhs)
 }
 
+
+// MARK: - Equatable
+
+public func == (lhs: Matrix, rhs: Matrix) -> Bool {
+    return lhs.elements == rhs.elements
+}
 
 // MARK: - CustomStringConvertible
 

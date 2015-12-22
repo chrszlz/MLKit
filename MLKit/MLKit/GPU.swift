@@ -60,12 +60,22 @@ class GPU {
     
     /// Returns `a` + `b`.
     func addMatrices(a: Matrix, b: Matrix) -> Matrix {
-        return a
+        guard (a.rows == b.rows && a.columns == b.columns) else {
+            fatalError("Shape of a(\(a.shape) must be equal to shape of b(\(b.shape)")
+        }
+        
+        let result = applyMatrixMatrixShader("matrix_add", a: a, b: b)
+        return result
     }
     
     /// Returns `a` - `b`.
     func subtractMatrices(a: Matrix, b: Matrix) -> Matrix {
-        return a
+        guard (a.rows == b.rows && a.columns == b.columns) else {
+            fatalError("Shape of a(\(a.shape) must be equal to shape of b(\(b.shape)")
+        }
+        
+        let result = applyMatrixMatrixShader("matrix_subtract", a: a, b: b)
+        return result
     }
     
     /// Returns `a` * `b`.
@@ -75,41 +85,8 @@ class GPU {
     
     /// Multiplies each element in `a` by `c`.
     func scaleMatrix(a: Matrix, by c: Float) ->  Matrix {
-        // Get the shader and configure the command encoder.
-        let pipeline = loadComputeShader("matrix_scale")
-        let commandBuffer = commandQueue.commandBuffer()
-        let commandEncoder = commandBuffer.computeCommandEncoder()
-        commandEncoder.setComputePipelineState(pipeline)
-        
-        // Load the data into MTLBuffers the shader can access.
-        var scalingFactor = c
-        var input = a.elements
-        var output = [Float](count: a.elements.count, repeatedValue: 0)
-        let size = a.elements.count * sizeof(Float)
-        
-        let inputBuffer = device.newBufferWithBytes(&input, length: size, options: .StorageModePrivate)
-        let outputBuffer = device.newBufferWithBytes(&output, length: size, options: .StorageModePrivate)
-        commandEncoder.setBytes(&scalingFactor, length: sizeof(Float), atIndex: 0)
-        commandEncoder.setBuffer(inputBuffer, offset: 0, atIndex: 1)
-        commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 2)
-        
-        // Set the number of threads to be executed in parallel.
-        let threadsPerGroup = MTLSize(width: 16, height: 1, depth: 1)
-        let numThreadGroups = MTLSize(width: (input.count+15)/threadsPerGroup.width, height: 1, depth: 1)
-        commandEncoder.dispatchThreadgroups(numThreadGroups, threadsPerThreadgroup: threadsPerGroup)
-        
-        // Commit the computations to the GPU and wait for it to finish.
-        commandEncoder.endEncoding()
-        commandBuffer.commit()
-        commandBuffer.waitUntilCompleted()
-        
-        // Grab the data from the from the MTLBuffer and return the new scaled
-        // matrix.
-        let data = NSData(bytesNoCopy: outputBuffer.contents(), length: size, freeWhenDone: false)
-        var result = [Float](count: output.count, repeatedValue: 0)
-        data.getBytes(&result, length: size)
-        
-        return Matrix(rows: a.rows, columns: a.columns, elements: result)
+        let result = applyMatrixConstShader("matrix_scale", a: a, c: c)
+        return result
     }
     
     
@@ -130,5 +107,96 @@ class GPU {
         }
         
         return pipeline
+    }
+    
+    private func applyMatrixMatrixShader(shader: String, a: Matrix, b: Matrix) -> Matrix {
+        // Get the shader and configure the command encoder.
+        let pipeline = loadComputeShader(shader)
+        let commandBuffer = commandQueue.commandBuffer()
+        let commandEncoder = commandBuffer.computeCommandEncoder()
+        commandEncoder.setComputePipelineState(pipeline)
+        
+        // Load the data into MTLBuffers the shader can access.
+        let inputA = a.elements
+        let inputB = b.elements
+        let output = [Float](count: a.rows * b.columns, repeatedValue: 0)
+        
+        let inputBufferA = device.newBufferWithContents(inputA)
+        let inputBufferB = device.newBufferWithContents(inputB)
+        let outputBuffer = device.newBufferWithContents(output)
+        commandEncoder.setBuffer(inputBufferA, offset: 0, atIndex: 0)
+        commandEncoder.setBuffer(inputBufferB, offset: 0, atIndex: 1)
+        commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 2)
+        
+        // Set the number of threads to be executed in parallel.
+        let execWidth = pipeline.threadExecutionWidth
+        let threadsPerGroup = MTLSize(width: execWidth, height: 1, depth: 1)
+        let numThreadGroups = MTLSize(width: (output.count + execWidth)/threadsPerGroup.width, height: 1, depth: 1)
+        commandEncoder.dispatchThreadgroups(numThreadGroups, threadsPerThreadgroup: threadsPerGroup)
+        
+        // Commit the computations to the GPU and wait for it to finish.
+        commandEncoder.endEncoding()
+        commandBuffer.commit()
+        commandBuffer.waitUntilCompleted()
+        
+        // Grab the data from the from the MTLBuffer and return the new scaled
+        // matrix.
+        let size = output.count * sizeof(Float)
+        let data = NSData(bytesNoCopy: outputBuffer.contents(), length: size, freeWhenDone: false)
+        var result = [Float](count: output.count, repeatedValue: 0)
+        data.getBytes(&result, length: size)
+        
+        return Matrix(rows: a.rows, columns: a.columns, elements: result)
+    }
+    
+    private func applyMatrixConstShader(shader: String, a: Matrix, c: Float) -> Matrix {
+        // Get the shader and configure the command encoder.
+        let pipeline = loadComputeShader(shader)
+        let commandBuffer = commandQueue.commandBuffer()
+        let commandEncoder = commandBuffer.computeCommandEncoder()
+        commandEncoder.setComputePipelineState(pipeline)
+        
+        // Load the data into MTLBuffers the shader can access.
+        var scalingFactor = c
+        let input = a.elements
+        let output = [Float](count: a.elements.count, repeatedValue: 0)
+        let size = a.elements.count * sizeof(Float)
+        
+        let inputBuffer = device.newBufferWithContents(input)
+        let outputBuffer = device.newBufferWithContents(output)
+        commandEncoder.setBytes(&scalingFactor, length: sizeof(Float), atIndex: 0)
+        commandEncoder.setBuffer(inputBuffer, offset: 0, atIndex: 1)
+        commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 2)
+        
+        // Set the number of threads to be executed in parallel.
+        let execWidth = pipeline.threadExecutionWidth
+        let threadsPerGroup = MTLSize(width: execWidth, height: 1, depth: 1)
+        let numThreadGroups = MTLSize(width: (input.count + execWidth)/threadsPerGroup.width, height: 1, depth: 1)
+        commandEncoder.dispatchThreadgroups(numThreadGroups, threadsPerThreadgroup: threadsPerGroup)
+        
+        // Commit the computations to the GPU and wait for it to finish.
+        commandEncoder.endEncoding()
+        commandBuffer.commit()
+        commandBuffer.waitUntilCompleted()
+        
+        // Grab the data from the from the MTLBuffer and return the new scaled
+        // matrix.
+        let data = NSData(bytesNoCopy: outputBuffer.contents(), length: size, freeWhenDone: false)
+        var result = [Float](count: output.count, repeatedValue: 0)
+        data.getBytes(&result, length: size)
+        
+        return Matrix(rows: a.rows, columns: a.columns, elements: result)
+    }
+}
+
+
+// MARK: - MTLDevice Extensions
+
+extension MTLDevice {
+    
+    /// Creates a new `MTLBuffer` with the specified contents.
+    func newBufferWithContents(contents: [Float]) -> MTLBuffer {
+        let size = contents.count * sizeof(Float)
+        return newBufferWithBytes(contents, length: size, options: .StorageModePrivate)
     }
 }
