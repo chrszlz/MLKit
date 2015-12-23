@@ -194,25 +194,48 @@ public func == (lhs: Matrix, rhs: Matrix) -> Bool {
 
 extension Matrix: CustomStringConvertible {
     public var description: String {
-        var description = ""
+        var output = "\t\(self.rows)x\(self.columns) : \(self.elements[0].dynamicType)\n\n"
         
-        for i in 0..<rows {
-            let contents = (0..<columns).map{"\(self[i, $0])"}.joinWithSeparator("\t")
-            
-            switch (i, rows) {
-            case (0, 1):
-                description += "(\t\(contents)\t)"
-            case (0, _):
-                description += "⎛\t\(contents)\t⎞"
-            case (rows - 1, _):
-                description += "⎝\t\(contents)\t⎠"
-            default:
-                description += "⎜\t\(contents)\t⎥"
-            }
-            
-            description += "\n"
+        let WIDE = 3
+        let TALL = 3
+        
+        var rowIndices: [Int] = []
+        var colIndices: [Int] = []
+        
+        // Determine row indexes
+        if (self.rows > 2*TALL) {
+            for r in (0..<TALL) { rowIndices += [r] }
+            rowIndices += [-1]
+            for r in (self.rows-TALL..<self.rows) { rowIndices += [r] }
+        } else {
+            for r in (0..<self.rows) { rowIndices += [r] }
         }
         
-        return description
+        // Determine column indexes
+        if (self.columns > 2*WIDE) {
+            for c in (0..<WIDE) { colIndices += [c] }
+            colIndices += [-1]
+            for c in (self.columns-WIDE..<self.columns) { colIndices += [c] }
+        } else {
+            for c in (0..<self.columns) { colIndices += [c] }
+        }
+        
+        for row in rowIndices {
+            if row == -1 {
+                output += "\t• • •\n"
+                continue
+            }
+            
+            for col in colIndices {
+                if col == -1 {
+                    output += "    • • •"
+                    continue
+                }
+                output += "\t\(NSString(format:"% 1.2f", self[row, col]))"
+            }
+            output += "\n"
+        }
+        
+        return output
     }
 }
