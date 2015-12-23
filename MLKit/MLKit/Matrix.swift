@@ -143,11 +143,19 @@ public struct Matrix: Equatable {
     
     /// Returns the sum of the two matrices (a + b).
     private static func add(a: Matrix, b: Matrix) -> Matrix {
+        guard (a.shape == b.shape) else {
+            fatalError("Shape of a(\(a.shape) must be equal to shape of b(\(b.shape)")
+        }
+        
         return MLComputeOptions.computeDevice.addMatrices(a: a, b: b)
     }
     
     /// Returns the difference of the two matrices (a - b).
     private static func subtract(a: Matrix, b: Matrix) -> Matrix {
+        guard (a.shape == b.shape) else {
+            fatalError("Shape of a(\(a.shape) must be equal to shape of b(\(b.shape)")
+        }
+        
         return MLComputeOptions.computeDevice.subtractMatrices(a: a, b: b)
     }
     

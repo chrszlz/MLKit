@@ -59,21 +59,13 @@ class GPU: MLComputeDevice {
     // MARK: - Matrix Operations
     
     /// Returns `a` + `b`.
-    func addMatrices(a a: Matrix, b: Matrix) -> Matrix {
-        guard (a.rows == b.rows && a.columns == b.columns) else {
-            fatalError("Shape of a(\(a.shape) must be equal to shape of b(\(b.shape)")
-        }
-        
+    func addMatrices(a a: Matrix, b: Matrix) -> Matrix {        
         let result = applyMatrixMatrixShader("matrix_add", a: a, b: b)
         return result
     }
     
     /// Returns `a` - `b`.
-    func subtractMatrices(a a: Matrix, b: Matrix) -> Matrix {
-        guard (a.rows == b.rows && a.columns == b.columns) else {
-            fatalError("Shape of a(\(a.shape) must be equal to shape of b(\(b.shape)")
-        }
-        
+    func subtractMatrices(a a: Matrix, b: Matrix) -> Matrix {        
         let result = applyMatrixMatrixShader("matrix_subtract", a: a, b: b)
         return result
     }
