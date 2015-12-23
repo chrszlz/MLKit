@@ -85,7 +85,7 @@ public struct Matrix: Equatable {
     /// Initializes the matrix from a 2D array.
     ///
     /// - parameter elements: The 2D array used to initialize the matrix.
-    public init(elements: [[Float]]) {
+    public init(_ elements: [[Float]]) {
         let rows = elements.count
         let columns = elements[0].count
         let elements = elements.flatMap { $0 }
@@ -146,6 +146,7 @@ public struct Matrix: Equatable {
     
     /// Returns the sum of the two matrices (a + b).
     private static func add(a: Matrix, b: Matrix) -> Matrix {
+        
         return GPU.deviceGPU.addMatrices(a: a, b: b)
     }
     
@@ -188,6 +189,16 @@ public func * (lhs: Float, rhs: Matrix) -> Matrix {
 
 public func == (lhs: Matrix, rhs: Matrix) -> Bool {
     return lhs.elements == rhs.elements
+}
+
+// MARK: Literal
+
+extension Matrix: ArrayLiteralConvertible {
+    public init(arrayLiteral elements: [Float]...) {
+        let data = elements
+        let matrix = Matrix(data)
+        self = matrix
+    }
 }
 
 // MARK: - CustomStringConvertible
