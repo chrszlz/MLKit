@@ -19,9 +19,6 @@ public enum InitializationPolicy {
     case Xavier
 }
 
-/// Defines the two dimensional shape of a matrix.
-public typealias Shape = (rows: Int, columns: Int)
-
 public struct Matrix: Equatable {
     
     /// The number of rows in this matrix.
@@ -96,7 +93,7 @@ public struct Matrix: Equatable {
     /// Returns a `rows` by `columns` matrix of zeros.
     /// - parameter rows: The number of rows in the matrix.
     /// - parameter: columns: The number of columns in the matrix.
-    public static func zeros(rows: Int, columns: Int) -> Matrix {
+    public static func zeros(rows rows: Int, columns: Int) -> Matrix {
         let elements = [Float](count: rows * columns, repeatedValue: 0)
         return Matrix(rows: rows, columns: columns, elements: elements)
     }
@@ -110,7 +107,7 @@ public struct Matrix: Equatable {
     /// Returns a `rows` by `columns` matrix of ones.
     /// - parameter rows: The number of rows in the matrix.
     /// - parameter columns: The number of columns in the matrix.
-    public static func ones(rows: Int, columns: Int) -> Matrix {
+    public static func ones(rows rows: Int, columns: Int) -> Matrix {
         let elements = [Float](count: rows * columns, repeatedValue: 1)
         return Matrix(rows: rows, columns: columns, elements: elements)
     }
@@ -139,7 +136,7 @@ public struct Matrix: Equatable {
     
     /// Returns the transpose of this matrix.
     private func transpose() -> Matrix {
-        var res = Matrix.zeros(self.columns, columns: self.rows)
+        var res = Matrix.zeros(rows: self.columns, columns: self.rows)
         vDSP_mtrans(self.elements, 1, &(res.elements), 1, vDSP_Length(res.rows), vDSP_Length(res.columns))
         return res
     }

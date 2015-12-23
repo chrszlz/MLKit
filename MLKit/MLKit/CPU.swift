@@ -31,7 +31,7 @@ class CPU: MLComputeDevice {
     
     /// Returns `a` * `b`.
     func multiplyMatrices(a a: Matrix, b: Matrix) -> Matrix {
-        var res = Matrix.zeros(a.rows, columns: b.columns)
+        var res = Matrix.zeros(rows: a.rows, columns: b.columns)
         cblas_sgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, Int32(a.rows), Int32(b.columns), Int32(a.columns), 1.0, a.elements, Int32(a.columns), b.elements, Int32(b.columns), 0.0, &res.elements, Int32(res.columns))
 
         return res

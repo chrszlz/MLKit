@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		834E93461C2A678D0050373D /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834E93451C2A678D0050373D /* Shape.swift */; };
 		934535AF1C2A06BD0056273F /* MLComputeDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934535AE1C2A06BD0056273F /* MLComputeDevice.swift */; };
 		934535B11C2A08750056273F /* CPU.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934535B01C2A08750056273F /* CPU.swift */; };
 		934535B51C2A0EE10056273F /* MLComputeOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934535B41C2A0EE10056273F /* MLComputeOptions.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		834E93451C2A678D0050373D /* Shape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
 		934535AE1C2A06BD0056273F /* MLComputeDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MLComputeDevice.swift; sourceTree = "<group>"; };
 		934535B01C2A08750056273F /* CPU.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CPU.swift; sourceTree = "<group>"; };
 		934535B41C2A0EE10056273F /* MLComputeOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MLComputeOptions.swift; sourceTree = "<group>"; };
@@ -46,6 +48,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		834E93441C2A677A0050373D /* Matrix */ = {
+			isa = PBXGroup;
+			children = (
+				939F73551C262251008937C1 /* Matrix.swift */,
+				834E93451C2A678D0050373D /* Shape.swift */,
+			);
+			name = Matrix;
+			sourceTree = "<group>";
+		};
 		939F73401C2621DC008937C1 = {
 			isa = PBXGroup;
 			children = (
@@ -70,7 +81,7 @@
 			children = (
 				934535B41C2A0EE10056273F /* MLComputeOptions.swift */,
 				934535AE1C2A06BD0056273F /* MLComputeDevice.swift */,
-				939F73551C262251008937C1 /* Matrix.swift */,
+				834E93441C2A677A0050373D /* Matrix */,
 				934535B01C2A08750056273F /* CPU.swift */,
 				93A2D1BB1C263B1D006AFE42 /* GPU.swift */,
 				93C37C3A1C2654D100BF739E /* Shaders.metal */,
@@ -161,6 +172,7 @@
 				93A2D1BC1C263B1D006AFE42 /* GPU.swift in Sources */,
 				939F73561C262251008937C1 /* Matrix.swift in Sources */,
 				934535B11C2A08750056273F /* CPU.swift in Sources */,
+				834E93461C2A678D0050373D /* Shape.swift in Sources */,
 				934535AF1C2A06BD0056273F /* MLComputeDevice.swift in Sources */,
 				93C37C3B1C2654D100BF739E /* Shaders.metal in Sources */,
 				934535B51C2A0EE10056273F /* MLComputeOptions.swift in Sources */,
