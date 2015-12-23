@@ -146,13 +146,12 @@ public struct Matrix: Equatable {
     
     /// Returns the sum of the two matrices (a + b).
     private static func add(a: Matrix, b: Matrix) -> Matrix {
-        
-        return GPU.deviceGPU.addMatrices(a: a, b: b)
+        return MLComputeOptions.computeDevice.addMatrices(a: a, b: b)
     }
     
     /// Returns the difference of the two matrices (a - b).
     private static func subtract(a: Matrix, b: Matrix) -> Matrix {
-        return GPU.deviceGPU.subtractMatrices(a: a, b: b)
+        return MLComputeOptions.computeDevice.subtractMatrices(a: a, b: b)
     }
     
     /// Returns the product of two matrices (a * b).
@@ -162,7 +161,7 @@ public struct Matrix: Equatable {
     
     /// Returns a `Matrix` where each element in `a` is multiplied by `s`.
     private static func scale(s: Float, a: Matrix) -> Matrix {
-        return GPU.deviceGPU.scaleMatrix(a, by: s)
+        return MLComputeOptions.computeDevice.scaleMatrix(a, by: s)
     }
 }
 
@@ -182,6 +181,10 @@ public func * (lhs: Matrix, rhs: Matrix) -> Matrix {
 
 public func * (lhs: Float, rhs: Matrix) -> Matrix {
     return Matrix.scale(lhs, a: rhs)
+}
+
+public func * (lhs: Matrix, rhs: Float) -> Matrix {
+    return Matrix.scale(rhs, a: lhs)
 }
 
 
