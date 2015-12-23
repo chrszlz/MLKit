@@ -41,7 +41,7 @@ class CPU: MLComputeDevice {
     func scaleMatrix(a: Matrix, by c: Float) -> Matrix {
         var res = a
         var alpha = c
-        cblas_cscal(Int32(a.elements.count), &alpha, &res, 1)
+        cblas_cscal(Int32(a.elements.count), &alpha, &res.elements, 1)
         
         return res
     }
