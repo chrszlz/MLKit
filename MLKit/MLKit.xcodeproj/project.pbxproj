@@ -11,6 +11,8 @@
 		934535AF1C2A06BD0056273F /* MLComputeDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934535AE1C2A06BD0056273F /* MLComputeDevice.swift */; };
 		934535B11C2A08750056273F /* CPU.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934535B01C2A08750056273F /* CPU.swift */; };
 		934535B51C2A0EE10056273F /* MLComputeOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934535B41C2A0EE10056273F /* MLComputeOptions.swift */; };
+		9386872A1C2B3F7A000CED38 /* MLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 939F734A1C2621DC008937C1 /* MLKit.framework */; };
+		938687311C2B3F98000CED38 /* MatrixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938687301C2B3F98000CED38 /* MatrixTests.swift */; };
 		939F734E1C2621DC008937C1 /* MLKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 939F734D1C2621DC008937C1 /* MLKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		939F73561C262251008937C1 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939F73551C262251008937C1 /* Matrix.swift */; };
 		939F73591C2627CC008937C1 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 939F73581C2627CC008937C1 /* Accelerate.framework */; };
@@ -19,11 +21,24 @@
 		93C37C3B1C2654D100BF739E /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93C37C3A1C2654D100BF739E /* Shaders.metal */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		9386872B1C2B3F7A000CED38 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 939F73411C2621DC008937C1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 939F73491C2621DC008937C1;
+			remoteInfo = MLKit;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		834E93451C2A678D0050373D /* Shape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
 		934535AE1C2A06BD0056273F /* MLComputeDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MLComputeDevice.swift; sourceTree = "<group>"; };
 		934535B01C2A08750056273F /* CPU.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CPU.swift; sourceTree = "<group>"; };
 		934535B41C2A0EE10056273F /* MLComputeOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MLComputeOptions.swift; sourceTree = "<group>"; };
+		938687251C2B3F7A000CED38 /* MLKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MLKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		938687291C2B3F7A000CED38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		938687301C2B3F98000CED38 /* MatrixTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatrixTests.swift; sourceTree = "<group>"; };
 		939F734A1C2621DC008937C1 /* MLKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MLKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		939F734D1C2621DC008937C1 /* MLKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MLKit.h; sourceTree = "<group>"; };
 		939F734F1C2621DC008937C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -36,6 +51,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		938687221C2B3F7A000CED38 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9386872A1C2B3F7A000CED38 /* MLKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		939F73461C2621DC008937C1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -57,6 +80,15 @@
 			name = Matrix;
 			sourceTree = "<group>";
 		};
+		938687261C2B3F7A000CED38 /* MLKitTests */ = {
+			isa = PBXGroup;
+			children = (
+				938687301C2B3F98000CED38 /* MatrixTests.swift */,
+				938687291C2B3F7A000CED38 /* Info.plist */,
+			);
+			path = MLKitTests;
+			sourceTree = "<group>";
+		};
 		939F73401C2621DC008937C1 = {
 			isa = PBXGroup;
 			children = (
@@ -64,6 +96,7 @@
 				939F73581C2627CC008937C1 /* Accelerate.framework */,
 				939F73571C2622CD008937C1 /* MLKit-Docs.playground */,
 				939F734C1C2621DC008937C1 /* MLKit */,
+				938687261C2B3F7A000CED38 /* MLKitTests */,
 				939F734B1C2621DC008937C1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -72,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				939F734A1C2621DC008937C1 /* MLKit.framework */,
+				938687251C2B3F7A000CED38 /* MLKitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -105,6 +139,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		938687241C2B3F7A000CED38 /* MLKitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9386872F1C2B3F7A000CED38 /* Build configuration list for PBXNativeTarget "MLKitTests" */;
+			buildPhases = (
+				938687211C2B3F7A000CED38 /* Sources */,
+				938687221C2B3F7A000CED38 /* Frameworks */,
+				938687231C2B3F7A000CED38 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9386872C1C2B3F7A000CED38 /* PBXTargetDependency */,
+			);
+			name = MLKitTests;
+			productName = MLKitTests;
+			productReference = 938687251C2B3F7A000CED38 /* MLKitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		939F73491C2621DC008937C1 /* MLKit */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 939F73521C2621DC008937C1 /* Build configuration list for PBXNativeTarget "MLKit" */;
@@ -129,9 +181,13 @@
 		939F73411C2621DC008937C1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Kesav Mulakaluri";
 				TargetAttributes = {
+					938687241C2B3F7A000CED38 = {
+						CreatedOnToolsVersion = 7.2;
+					};
 					939F73491C2621DC008937C1 = {
 						CreatedOnToolsVersion = 7.2;
 					};
@@ -150,11 +206,19 @@
 			projectRoot = "";
 			targets = (
 				939F73491C2621DC008937C1 /* MLKit */,
+				938687241C2B3F7A000CED38 /* MLKitTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		938687231C2B3F7A000CED38 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		939F73481C2621DC008937C1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -165,6 +229,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		938687211C2B3F7A000CED38 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				938687311C2B3F98000CED38 /* MatrixTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		939F73451C2621DC008937C1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -181,7 +253,37 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		9386872C1C2B3F7A000CED38 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 939F73491C2621DC008937C1 /* MLKit */;
+			targetProxy = 9386872B1C2B3F7A000CED38 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		9386872D1C2B3F7A000CED38 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = MLKitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "kesav-mulakaluri.MLKitTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		9386872E1C2B3F7A000CED38 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = MLKitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "kesav-mulakaluri.MLKitTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		939F73501C2621DC008937C1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -310,6 +412,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		9386872F1C2B3F7A000CED38 /* Build configuration list for PBXNativeTarget "MLKitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9386872D1C2B3F7A000CED38 /* Debug */,
+				9386872E1C2B3F7A000CED38 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		939F73441C2621DC008937C1 /* Build configuration list for PBXProject "MLKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

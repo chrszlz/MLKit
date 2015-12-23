@@ -3,6 +3,5 @@
     <pages>
         <page name='MLKit Overview'/>
         <page name='Matrix'/>
-        <page name='CPU GPU Validation'/>
     </pages>
 </playground>
