@@ -6,6 +6,8 @@ import MLKit
 // Real docs coming soon. Just using this as a way to test the matrix 
 // because fuck unit tests...
 
+let r = Matrix(rows: 2, columns: 2, policy: .Xavier)
+
 let m = Matrix([[1,2],[3,4]])
 let res = m.T
 

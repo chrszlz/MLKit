@@ -10,12 +10,12 @@ import Foundation
 import Accelerate
 
 /// The method used to initialize the elements in the matrix.
-///
-/// - Random(min, max): Randomly initialize each element with a
-///                     number between min and max.
-/// - Xavier: Initalize the elements using Xavier initialization.
 public enum InitializationPolicy {
-    case Random(Float, Float)
+    
+    /// Randomly initialize each element with number between min and max.
+    case Random(min: Float, max: Float)
+    
+    /// Initialize the matrix using Xavier initialization.
     case Xavier
 }
 
@@ -65,7 +65,17 @@ public struct Matrix: Equatable {
     public init(rows: Int, columns: Int, policy: InitializationPolicy) {
         let rows = rows
         let columns = columns
-        let elements = [Float(0)]
+        let count = rows * columns
+        
+        var elements = [Float](count: count, repeatedValue: 0)
+        for i in 0..<count {
+            switch policy {
+            case .Random(let min, let max):
+                elements[i] = Float.random(min, max)
+            case .Xavier:
+                elements[i] = Float.random()/sqrt(Float(columns))
+            }
+        }
         
         self.init(rows: rows, columns: columns, elements: elements)
     }
@@ -199,7 +209,7 @@ public func == (lhs: Matrix, rhs: Matrix) -> Bool {
     return lhs.elements == rhs.elements
 }
 
-// MARK: Literal
+// MARK: - ArrayLiteralConvertible
 
 extension Matrix: ArrayLiteralConvertible {
     public init(arrayLiteral elements: [Float]...) {
@@ -256,5 +266,15 @@ extension Matrix: CustomStringConvertible {
         }
         
         return output
+    }
+}
+
+
+// MARK: - Float Extensions
+
+extension Float {
+    
+    public static func random(min: Float = 0, _ max: Float = 100) -> Float {
+        return (Float(arc4random()) / 0xFFFFFFFF) * (max - min) + min
     }
 }
