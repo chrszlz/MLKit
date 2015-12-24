@@ -101,6 +101,7 @@ public struct Matrix: Equatable {
     }
     
     /// Returns a `rows` by `columns` matrix of zeros.
+    ///
     /// - parameter rows: The number of rows in the matrix.
     /// - parameter: columns: The number of columns in the matrix.
     public static func zeros(rows rows: Int, columns: Int) -> Matrix {
@@ -109,12 +110,14 @@ public struct Matrix: Equatable {
     }
     
     /// Returns a `rows` by `columns` matrix of zeros.
+    ///
     /// - parameter shape: The number of rows and columns in the matrix.
     public static func zeros(shape: Shape) -> Matrix {
         return self.zeros(rows: shape.rows, columns: shape.columns)
     }
     
     /// Returns a `rows` by `columns` matrix of ones.
+    ///
     /// - parameter rows: The number of rows in the matrix.
     /// - parameter columns: The number of columns in the matrix.
     public static func ones(rows rows: Int, columns: Int) -> Matrix {
@@ -123,6 +126,7 @@ public struct Matrix: Equatable {
     }
     
     /// Returns a `rows` by `columns` matrix of ones.
+    ///
     /// - parameter shape: The number of rows and columns in the matrix.
     public static func ones(shape: Shape) -> Matrix {
         return self.ones(rows: shape.rows, columns: shape.columns)
@@ -209,6 +213,7 @@ public func == (lhs: Matrix, rhs: Matrix) -> Bool {
     return lhs.elements == rhs.elements
 }
 
+
 // MARK: - ArrayLiteralConvertible
 
 extension Matrix: ArrayLiteralConvertible {
@@ -218,6 +223,7 @@ extension Matrix: ArrayLiteralConvertible {
         self = matrix
     }
 }
+
 
 // MARK: - CustomStringConvertible
 
@@ -274,6 +280,8 @@ extension Matrix: CustomStringConvertible {
 
 extension Float {
     
+    /// Returns a float between `min` and `max`. If no arguments are passed in,
+    /// `min` defaults to 0 and `max` defaults to 100.
     public static func random(min: Float = 0, _ max: Float = 100) -> Float {
         return (Float(arc4random()) / 0xFFFFFFFF) * (max - min) + min
     }
