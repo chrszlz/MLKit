@@ -43,7 +43,7 @@
 		939F734D1C2621DC008937C1 /* MLKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MLKit.h; sourceTree = "<group>"; };
 		939F734F1C2621DC008937C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		939F73551C262251008937C1 /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
-		939F73571C2622CD008937C1 /* MLKit-Docs.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = "MLKit-Docs.playground"; path = "../MLKit-Docs.playground"; sourceTree = "<group>"; };
+		939F73571C2622CD008937C1 /* MLKit.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MLKit.playground; path = ../MLKit.playground; sourceTree = "<group>"; };
 		939F73581C2627CC008937C1 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		93A2D1BB1C263B1D006AFE42 /* GPU.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPU.swift; sourceTree = "<group>"; };
 		93A2D1BD1C263E11006AFE42 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
@@ -94,7 +94,7 @@
 			children = (
 				93A2D1BD1C263E11006AFE42 /* Metal.framework */,
 				939F73581C2627CC008937C1 /* Accelerate.framework */,
-				939F73571C2622CD008937C1 /* MLKit-Docs.playground */,
+				939F73571C2622CD008937C1 /* MLKit.playground */,
 				939F734C1C2621DC008937C1 /* MLKit */,
 				938687261C2B3F7A000CED38 /* MLKitTests */,
 				939F734B1C2621DC008937C1 /* Products */,
@@ -419,6 +419,7 @@
 				9386872E1C2B3F7A000CED38 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		939F73441C2621DC008937C1 /* Build configuration list for PBXProject "MLKit" */ = {
 			isa = XCConfigurationList;
