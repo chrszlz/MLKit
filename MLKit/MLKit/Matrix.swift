@@ -175,7 +175,7 @@ public struct Matrix: Equatable {
     
     /// Returns the product of two matrices (a * b).
     private static func multiply(a: Matrix, b: Matrix) -> Matrix {
-        return a
+        return MLComputeOptions.computeDevice.multiplyMatrices(a: a, b: b)
     }
     
     /// Returns a `Matrix` where each element in `a` is multiplied by `s`.

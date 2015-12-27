@@ -67,4 +67,15 @@ class MatrixTests: XCTestCase {
         let res = c * x
         XCTAssert(res == Matrix([[2,2], [2,2]]))
     }
+    
+    
+    // MARK: - Matrix Multiplication Tests
+    
+    func testMatrixMultiplyCPU() {
+        MLSetComputeMode(.CPU)
+        let x = Matrix([[1,2], [3,4]])
+        let y = Matrix([[4,5], [6,7]])
+        let res = x * y
+        XCTAssert(res == Matrix([[16, 19], [36, 43]]))
+    }
 }
