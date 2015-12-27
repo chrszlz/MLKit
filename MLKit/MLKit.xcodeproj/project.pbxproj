@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		834E93461C2A678D0050373D /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834E93451C2A678D0050373D /* Shape.swift */; };
+		9324D0911C30949100FF7DF9 /* Layer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9324D0901C30949100FF7DF9 /* Layer.swift */; };
 		934535AF1C2A06BD0056273F /* MLComputeDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934535AE1C2A06BD0056273F /* MLComputeDevice.swift */; };
 		934535B11C2A08750056273F /* CPU.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934535B01C2A08750056273F /* CPU.swift */; };
 		934535B51C2A0EE10056273F /* MLComputeOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934535B41C2A0EE10056273F /* MLComputeOptions.swift */; };
@@ -34,6 +35,7 @@
 
 /* Begin PBXFileReference section */
 		834E93451C2A678D0050373D /* Shape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
+		9324D0901C30949100FF7DF9 /* Layer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layer.swift; sourceTree = "<group>"; };
 		934535AE1C2A06BD0056273F /* MLComputeDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MLComputeDevice.swift; sourceTree = "<group>"; };
 		934535B01C2A08750056273F /* CPU.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CPU.swift; sourceTree = "<group>"; };
 		934535B41C2A0EE10056273F /* MLComputeOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MLComputeOptions.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				93658A231C30820D00CD1FBE /* MLBlock.swift */,
+				9324D0901C30949100FF7DF9 /* Layer.swift */,
 			);
 			name = MLBlocks;
 			sourceTree = "<group>";
@@ -266,6 +269,7 @@
 				834E93461C2A678D0050373D /* Shape.swift in Sources */,
 				93658A241C30820D00CD1FBE /* MLBlock.swift in Sources */,
 				934535AF1C2A06BD0056273F /* MLComputeDevice.swift in Sources */,
+				9324D0911C30949100FF7DF9 /* Layer.swift in Sources */,
 				93C37C3B1C2654D100BF739E /* Shaders.metal in Sources */,
 				934535B51C2A0EE10056273F /* MLComputeOptions.swift in Sources */,
 			);
