@@ -21,6 +21,7 @@
 		93A2D1BC1C263B1D006AFE42 /* GPU.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A2D1BB1C263B1D006AFE42 /* GPU.swift */; };
 		93A2D1BE1C263E11006AFE42 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93A2D1BD1C263E11006AFE42 /* Metal.framework */; };
 		93A98FE51C30B15900DC475D /* Activation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A98FE41C30B15900DC475D /* Activation.swift */; };
+		93A98FE71C30B30700DC475D /* NeuralNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A98FE61C30B30700DC475D /* NeuralNetwork.swift */; };
 		93C37C3B1C2654D100BF739E /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93C37C3A1C2654D100BF739E /* Shaders.metal */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +54,7 @@
 		93A2D1BB1C263B1D006AFE42 /* GPU.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPU.swift; sourceTree = "<group>"; };
 		93A2D1BD1C263E11006AFE42 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		93A98FE41C30B15900DC475D /* Activation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Activation.swift; sourceTree = "<group>"; };
+		93A98FE61C30B30700DC475D /* NeuralNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeuralNetwork.swift; sourceTree = "<group>"; };
 		93C37C3A1C2654D100BF739E /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -104,6 +106,7 @@
 				93658A231C30820D00CD1FBE /* MLBlock.swift */,
 				9324D0901C30949100FF7DF9 /* Layer.swift */,
 				93A98FE41C30B15900DC475D /* Activation.swift */,
+				93A98FE61C30B30700DC475D /* NeuralNetwork.swift */,
 			);
 			name = MLBlocks;
 			sourceTree = "<group>";
@@ -274,6 +277,7 @@
 				934535AF1C2A06BD0056273F /* MLComputeDevice.swift in Sources */,
 				9324D0911C30949100FF7DF9 /* Layer.swift in Sources */,
 				93C37C3B1C2654D100BF739E /* Shaders.metal in Sources */,
+				93A98FE71C30B30700DC475D /* NeuralNetwork.swift in Sources */,
 				934535B51C2A0EE10056273F /* MLComputeOptions.swift in Sources */,
 				93A98FE51C30B15900DC475D /* Activation.swift in Sources */,
 			);
