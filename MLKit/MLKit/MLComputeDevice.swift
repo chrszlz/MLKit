@@ -23,4 +23,10 @@ public protocol MLComputeDevice {
     
     /// Multiplies each element in `a` by `c`.
     func scaleMatrix(a: Matrix, by c: Float) ->  Matrix
+    
+    
+    // MARK: - Activations
+    
+    /// Applies the sigmoid function to each element in `a`.
+    func applySigmoid(a: Matrix) -> Matrix
 }

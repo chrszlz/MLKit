@@ -81,6 +81,11 @@ class GPU: MLComputeDevice {
         return result
     }
     
+    /// Applies the sigmoid function to each element in `a`.
+    func applySigmoid(a: Matrix) -> Matrix {
+        return a
+    }
+    
     
     // MARK: - Private Methods
     

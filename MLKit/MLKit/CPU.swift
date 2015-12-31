@@ -44,4 +44,9 @@ class CPU: MLComputeDevice {
         
         return res
     }
+    
+    /// Applies the sigmoid function to each element in `a`.
+    func applySigmoid(a: Matrix) -> Matrix {
+        return a
+    }
 }
