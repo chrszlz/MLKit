@@ -15,10 +15,6 @@ public protocol MLBlock {
     /// The name of the `MLBlock`.
     var name: String { get set }
     
-    /// The input for the `MLBlock`.
-    var input: Matrix { get set }
-    
-    /// The output for the `MLBlock`.
-    var output: Matrix { get }
-    
+    /// Returns a `Matrix` by applying some transform to `input`.
+    func apply(input: Matrix) -> Matrix
 }

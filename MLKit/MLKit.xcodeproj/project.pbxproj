@@ -13,6 +13,7 @@
 		934535B11C2A08750056273F /* CPU.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934535B01C2A08750056273F /* CPU.swift */; };
 		934535B51C2A0EE10056273F /* MLComputeOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934535B41C2A0EE10056273F /* MLComputeOptions.swift */; };
 		93658A241C30820D00CD1FBE /* MLBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93658A231C30820D00CD1FBE /* MLBlock.swift */; };
+		937116C41C322D0E00F469A3 /* InnerProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937116C31C322D0E00F469A3 /* InnerProduct.swift */; };
 		9386872A1C2B3F7A000CED38 /* MLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 939F734A1C2621DC008937C1 /* MLKit.framework */; };
 		938687311C2B3F98000CED38 /* MatrixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938687301C2B3F98000CED38 /* MatrixTests.swift */; };
 		939F734E1C2621DC008937C1 /* MLKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 939F734D1C2621DC008937C1 /* MLKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -42,6 +43,7 @@
 		934535B01C2A08750056273F /* CPU.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CPU.swift; sourceTree = "<group>"; };
 		934535B41C2A0EE10056273F /* MLComputeOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MLComputeOptions.swift; sourceTree = "<group>"; };
 		93658A231C30820D00CD1FBE /* MLBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MLBlock.swift; sourceTree = "<group>"; };
+		937116C31C322D0E00F469A3 /* InnerProduct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InnerProduct.swift; sourceTree = "<group>"; };
 		938687251C2B3F7A000CED38 /* MLKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MLKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		938687291C2B3F7A000CED38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		938687301C2B3F98000CED38 /* MatrixTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatrixTests.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 				9324D0901C30949100FF7DF9 /* Layer.swift */,
 				93A98FE41C30B15900DC475D /* Activation.swift */,
 				93A98FE61C30B30700DC475D /* NeuralNetwork.swift */,
+				937116C31C322D0E00F469A3 /* InnerProduct.swift */,
 			);
 			name = MLBlocks;
 			sourceTree = "<group>";
@@ -271,6 +274,7 @@
 			files = (
 				93A2D1BC1C263B1D006AFE42 /* GPU.swift in Sources */,
 				939F73561C262251008937C1 /* Matrix.swift in Sources */,
+				937116C41C322D0E00F469A3 /* InnerProduct.swift in Sources */,
 				934535B11C2A08750056273F /* CPU.swift in Sources */,
 				834E93461C2A678D0050373D /* Shape.swift in Sources */,
 				93658A241C30820D00CD1FBE /* MLBlock.swift in Sources */,

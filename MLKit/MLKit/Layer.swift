@@ -11,12 +11,6 @@ import Foundation
 /// Represents a layer of a Neural Network.
 public protocol Layer: MLBlock {
     
-    /// The number of incoming connections for the layer.
-    var numInputs: Int { get set }
-    
-    /// The number of outgoing connections for the layer.
-    var numOutputs: Int { get set }
-    
     /// The weights for this layer.
     var weights: Matrix { get set }
     
