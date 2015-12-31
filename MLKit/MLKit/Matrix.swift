@@ -158,7 +158,7 @@ public struct Matrix: Equatable {
     /// Returns the sum of the two matrices (a + b).
     private static func add(a: Matrix, b: Matrix) -> Matrix {
         guard (a.shape == b.shape) else {
-            fatalError("Shape of a(\(a.shape) must be equal to shape of b(\(b.shape)")
+            fatalError("Shape of a(\(a.shape) must be equal to shape of b(\(b.shape) for addition.")
         }
         
         return MLComputeOptions.computeDevice.addMatrices(a: a, b: b)
@@ -167,7 +167,7 @@ public struct Matrix: Equatable {
     /// Returns the difference of the two matrices (a - b).
     private static func subtract(a: Matrix, b: Matrix) -> Matrix {
         guard (a.shape == b.shape) else {
-            fatalError("Shape of a(\(a.shape) must be equal to shape of b(\(b.shape)")
+            fatalError("Shape of a(\(a.shape) must be equal to shape of b(\(b.shape) for subtraction.")
         }
         
         return MLComputeOptions.computeDevice.subtractMatrices(a: a, b: b)
@@ -175,6 +175,10 @@ public struct Matrix: Equatable {
     
     /// Returns the product of two matrices (a * b).
     private static func multiply(a: Matrix, b: Matrix) -> Matrix {
+        guard (a.columns == b.rows) else {
+            fatalError("Number of columns in a(\(a.columns) must be equal to number of rows in b(\(b.rows) for multiplication.")
+        }
+        
         return MLComputeOptions.computeDevice.multiplyMatrices(a: a, b: b)
     }
     
