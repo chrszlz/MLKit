@@ -22,16 +22,15 @@ public struct InnerProduct: Layer {
     
     // MARK: - Initializers
     
-    /// Initializes the InnerProduct layer.
+    /// Initializes an InnerProduct Layer.
     ///
     /// - parameter name: The name of the layer.
-    /// - parameter weightsShape: The shape of the weights matrix.
-    /// - parameter weightInitialization: How to initialize the weights and bias.
-    /// - parameter biasShape: The shape of the bias matrix.
-    public init(name: String, weightsShape: Shape, weightInitialization policy: InitializationPolicy, biasShape: Shape) {
+    /// - parameter weights: The weights for the layer.
+    /// - parameter bias: The bias for the layer.
+    public init(name: String, weights: Matrix, bias: Matrix) {
         self.name = name
-        self.weights = Matrix(shape: weightsShape, policy: policy)
-        self.bias = Matrix(shape: biasShape, policy: policy)
+        self.weights = weights
+        self.bias = bias
     }
     
     /// Returns the weights * input + bias
