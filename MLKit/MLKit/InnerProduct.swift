@@ -10,22 +10,13 @@ import Foundation
 
 public struct InnerProduct: Layer {
     
-    
-    // MARK: - MLBlock
-    
+    /// The name of the layer.
     public var name: String
     
-    public var input: Matrix
-    
-    public var output: Matrix {
-        return (weights * input) + bias
-    }
-    
-    
-    // MARK: - Layer
-    
+    /// The weights for this layer.
     public var weights: Matrix
     
+    /// The bias for this layer.
     public var bias: Matrix
     
     
@@ -39,8 +30,12 @@ public struct InnerProduct: Layer {
     /// - parameter biasShape: The shape of the bias matrix.
     public init(name: String, weightsShape: Shape, weightInitialization policy: InitializationPolicy, biasShape: Shape) {
         self.name = name
-        self.input = Matrix.zeros(rows: 1, columns: 1)
         self.weights = Matrix(shape: weightsShape, policy: policy)
         self.bias = Matrix(shape: biasShape, policy: policy)
+    }
+    
+    /// Returns the weights * input + bias
+    public func apply(input: Matrix) -> Matrix {
+        return (weights * input) + bias
     }
 }
