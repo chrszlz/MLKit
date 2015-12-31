@@ -16,7 +16,7 @@ public struct Shape : Equatable {
     public let columns: Int
     
     /// The designated initializer. Creates a Shape with specified `rows` and `columns`.
-    init(_ rows: Int, _ columns: Int) {
+    public init(_ rows: Int, _ columns: Int) {
         self.rows = rows
         self.columns = columns
     }
