@@ -47,6 +47,15 @@ class CPU: MLComputeDevice {
     
     /// Applies the sigmoid function to each element in `a`.
     func applySigmoid(a: Matrix) -> Matrix {
-        return a
+        var output = Matrix.zeros(a.shape)
+        var count = Int32(output.elements.count)
+        var one: Float = 1.0
+        var negOne: Float = -1.0
+        vDSP_vneg(a.elements, 1, &output.elements, 1, vDSP_Length(count))
+        vvexpf(&output.elements, &output.elements, &count)
+        vDSP_vsadd(&output.elements, 1, &one, &output.elements, 1, vDSP_Length(count))
+        vvpowsf(&output.elements, &negOne, &output.elements, &count)
+
+        return output
     }
 }
