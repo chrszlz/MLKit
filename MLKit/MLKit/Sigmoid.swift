@@ -8,23 +8,23 @@
 
 import Foundation
 
-struct Sigmoid: Activation {
+public struct Sigmoid: Activation {
     
     /// The name of the sigmoid activation block.
-    var name: String
+    public var name: String
     
     /// Initializes a Sigmoid MLBlock with name `name`.
-    init(name: String) {
+    public init(name: String) {
         self.name = name
     }
     
     /// Applies the sigmoid function to `input`.
-    func apply(input: Matrix) -> Matrix {
+    public func apply(input: Matrix) -> Matrix {
         return MLComputeOptions.computeDevice.applySigmoid(input)
     }
     
     /// Applies the derivative of the sigmoid function to `input`.
-    func applyDerivative(input: Matrix) -> Matrix {
+    public func applyDerivative(input: Matrix) -> Matrix {
         return MLComputeOptions.computeDevice.applySigmoid(input)
     }
 }
