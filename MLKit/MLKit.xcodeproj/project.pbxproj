@@ -24,6 +24,7 @@
 		93A98FE51C30B15900DC475D /* Activation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A98FE41C30B15900DC475D /* Activation.swift */; };
 		93A98FE71C30B30700DC475D /* NeuralNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A98FE61C30B30700DC475D /* NeuralNetwork.swift */; };
 		93C37C3B1C2654D100BF739E /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93C37C3A1C2654D100BF739E /* Shaders.metal */; };
+		93D7E4651C378AFC00A20DD9 /* Sigmoid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D7E4641C378AFC00A20DD9 /* Sigmoid.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,7 @@
 		93A98FE41C30B15900DC475D /* Activation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Activation.swift; sourceTree = "<group>"; };
 		93A98FE61C30B30700DC475D /* NeuralNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeuralNetwork.swift; sourceTree = "<group>"; };
 		93C37C3A1C2654D100BF739E /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		93D7E4641C378AFC00A20DD9 /* Sigmoid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sigmoid.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +112,7 @@
 				93A98FE41C30B15900DC475D /* Activation.swift */,
 				93A98FE61C30B30700DC475D /* NeuralNetwork.swift */,
 				937116C31C322D0E00F469A3 /* InnerProduct.swift */,
+				93D7E4641C378AFC00A20DD9 /* Sigmoid.swift */,
 			);
 			name = MLBlocks;
 			sourceTree = "<group>";
@@ -277,6 +280,7 @@
 				937116C41C322D0E00F469A3 /* InnerProduct.swift in Sources */,
 				934535B11C2A08750056273F /* CPU.swift in Sources */,
 				834E93461C2A678D0050373D /* Shape.swift in Sources */,
+				93D7E4651C378AFC00A20DD9 /* Sigmoid.swift in Sources */,
 				93658A241C30820D00CD1FBE /* MLBlock.swift in Sources */,
 				934535AF1C2A06BD0056273F /* MLComputeDevice.swift in Sources */,
 				9324D0911C30949100FF7DF9 /* Layer.swift in Sources */,

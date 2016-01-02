@@ -11,7 +11,6 @@ import Foundation
 /// Represents an activation function used in Neural Networks.
 public protocol Activation: MLBlock {
     
-    /// The output obtained by applying the derivative of the activation 
-    /// function to the input.
-    var outputUsingDeriviative: Matrix { get }
+    /// Applies the derivative of the activation function to `input`.
+    func applyDerivative(input: Matrix) -> Matrix
 }
