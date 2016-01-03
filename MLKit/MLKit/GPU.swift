@@ -109,7 +109,6 @@ class GPU: MLComputeDevice {
     func scaleMatrix(a: Matrix, by c: Float) ->  Matrix {
         let result = applyMatrixShader("matrix_scale") { (commandEncoder: MTLComputeCommandEncoder) -> (MTLBuffer, Shape) in
             // Load the data into MTLBuffers the shader can access.
-            // Load the data into MTLBuffers the shader can access.
             var scalingFactor = c
             let input = a.elements
             let output = [Float](count: a.elements.count, repeatedValue: 0.0)
@@ -192,6 +191,6 @@ extension MTLDevice {
     /// Creates a new `MTLBuffer` with the specified contents.
     func newBufferWithContents(contents: [Float]) -> MTLBuffer {
         let size = contents.count * sizeof(Float)
-        return newBufferWithBytes(contents, length: size, options: .CPUCacheModeDefaultCache)//StorageModePrivate)
+        return newBufferWithBytes(contents, length: size, options: .StorageModePrivate)
     }
 }
