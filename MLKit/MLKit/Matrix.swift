@@ -67,7 +67,7 @@ public struct Matrix: Equatable {
         let columns = columns
         let count = rows * columns
         
-        var elements = [Float](count: count, repeatedValue: 0)
+        var elements = [Float](count: count, repeatedValue: 0.0)
         for i in 0..<count {
             switch policy {
             case .Random(let min, let max):
@@ -222,9 +222,7 @@ public func == (lhs: Matrix, rhs: Matrix) -> Bool {
 
 extension Matrix: ArrayLiteralConvertible {
     public init(arrayLiteral elements: [Float]...) {
-        let data = elements
-        let matrix = Matrix(data)
-        self = matrix
+        self = Matrix(elements)
     }
 }
 
