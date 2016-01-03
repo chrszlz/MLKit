@@ -73,7 +73,7 @@ class GPU: MLComputeDevice {
             commandEncoder.setBuffer(inputBufferB, offset: 0, atIndex: 1)
             commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 2)
             
-            return (outputBuffer, Shape(a.rows, b.columns))
+            return (outputBuffer, a.shape)
         }
         
         return result
@@ -94,7 +94,7 @@ class GPU: MLComputeDevice {
             commandEncoder.setBuffer(inputBufferB, offset: 0, atIndex: 1)
             commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 2)
             
-            return (outputBuffer, Shape(a.rows, b.columns))
+            return (outputBuffer, a.shape)
         }
         
         return result
@@ -151,6 +151,7 @@ class GPU: MLComputeDevice {
     }
     
     typealias ComputeInputs = (MTLComputeCommandEncoder -> (MTLBuffer, Shape))
+    /// Generic function to apply any inputs and Metal shader.
     private func applyMatrixShader(shader: String, with computeInputs: ComputeInputs) -> Matrix {
         // Get the shader and configure the command encoder.
         let pipeline = loadComputeShader(shader)
@@ -158,7 +159,7 @@ class GPU: MLComputeDevice {
         let commandEncoder = commandBuffer.computeCommandEncoder()
         commandEncoder.setComputePipelineState(pipeline)
         
-        // Update command encoder with inputs and determine output shape
+        // Update command encoder with inputs and determine output shape.
         let (outputBuffer, outputShape) = computeInputs(commandEncoder)
         
         // Set the number of threads to be executed in parallel.
