@@ -15,8 +15,8 @@ class CPU: MLComputeDevice {
     
     /// Returns `a` + `b`.
     func addMatrices(a a: Matrix, b: Matrix) -> Matrix {
-        var res = b
-        cblas_saxpy(Int32(res.elements.count), 1.0, a.elements, 1, &res.elements, 1)
+        var res = b        
+        vDSP_vadd(a.elements, 1, b.elements, 1, &res.elements, 1, vDSP_Length(res.elements.count))
  
         return res
     }
@@ -29,18 +29,18 @@ class CPU: MLComputeDevice {
         return res
     }
     
+    /// Multiplies each element in `a` by `c`.
+    func scaleMatrix(var a: Matrix, var by c: Float) -> Matrix {
+        vDSP_vsmul(a.elements, 1, &c, &a.elements, 1, vDSP_Length(a.elements.count))
+        
+        return a
+    }
+    
+    
     /// Returns `a` * `b`.
     func multiplyMatrices(a a: Matrix, b: Matrix) -> Matrix {
         var res = Matrix.zeros(rows: a.rows, columns: b.columns)
         cblas_sgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, Int32(a.rows), Int32(b.columns), Int32(a.columns), 1.0, a.elements, Int32(a.columns), b.elements, Int32(b.columns), 0.0, &res.elements, Int32(res.columns))
-
-        return res
-    }
-    
-    /// Multiplies each element in `a` by `c`.
-    func scaleMatrix(a: Matrix, by c: Float) -> Matrix {
-        var res = a
-        cblas_sscal(Int32(a.elements.count), c, &res.elements, 1)
         
         return res
     }
