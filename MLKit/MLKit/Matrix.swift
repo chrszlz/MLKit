@@ -231,40 +231,34 @@ extension Matrix: ArrayLiteralConvertible {
 
 extension Matrix: CustomStringConvertible {
     public var description: String {
-        var output = "\t\(self.rows)x\(self.columns) : \(self.elements[0].dynamicType)\n\n"
-        
-        let WIDE = 3
-        let TALL = 3
-        
-        var rowIndices: [Int] = []
-        var colIndices: [Int] = []
-        
-        // Determine row indexes
-        if (self.rows > 2*TALL) {
-            for r in (0..<TALL) { rowIndices += [r] }
-            rowIndices += [-1]
-            for r in (self.rows-TALL..<self.rows) { rowIndices += [r] }
-        } else {
-            for r in (0..<self.rows) { rowIndices += [r] }
+        var output = "\t\(self.rows)x\(self.columns) : \(self.elements[0].dynamicType) : \(MLComputeOptions.computeMode)\n\n"
+ 
+        // Calculates how many indices to print within each axis.
+        func determineAxisIndices(axisLength axisLength: Int, axisLimit: Int) -> [Int] {
+            guard (axisLength > 2*axisLimit) else {
+                return [Int](0..<axisLength)
+            }
+            
+            var indices = [Int] ( 0..<axisLimit ) // Beginning indices
+            indices += [Int] ( (axisLength-1)-(axisLimit-1)..<axisLength ) // End indices
+            indices.insert(-1, atIndex: axisLimit) // Inserts -1 to mark ...
+            
+            return indices
         }
         
-        // Determine column indexes
-        if (self.columns > 2*WIDE) {
-            for c in (0..<WIDE) { colIndices += [c] }
-            colIndices += [-1]
-            for c in (self.columns-WIDE..<self.columns) { colIndices += [c] }
-        } else {
-            for c in (0..<self.columns) { colIndices += [c] }
-        }
+        // Determine row and column indices to print.
+        let LIMITS = Shape(3, 3)
+        let rowIndices = determineAxisIndices(axisLength: self.rows, axisLimit: LIMITS.rows)
+        let colIndices = determineAxisIndices(axisLength: self.columns, axisLimit: LIMITS.columns)
         
         for row in rowIndices {
-            if row == -1 {
+            guard (row >= 0) else {
                 output += "\t• • •\n"
                 continue
             }
             
             for col in colIndices {
-                if col == -1 {
+                guard (col >= 0) else {
                     output += "    • • •"
                     continue
                 }
