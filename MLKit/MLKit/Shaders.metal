@@ -32,3 +32,10 @@ kernel void matrix_subtract(const device float *input1 [[ buffer(0) ]],
                             uint gid [[ thread_position_in_grid ]]) {
     output[gid] = input1[gid] - input2[gid];
 }
+
+// Applies the sigmoid function to each element in input.
+kernel void sigmoid(const device float *input [[ buffer(0) ]],
+                    device float *output [[ buffer(1) ]],
+                    uint gid [[ thread_position_in_grid ]]) {
+    output[gid] = 1.0/(1.0 + exp(-1.0 * input[gid]));
+}

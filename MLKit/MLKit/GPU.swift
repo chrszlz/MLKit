@@ -13,6 +13,10 @@ import Metal
 /// matrix computations.
 class GPU: MLComputeDevice {
     
+    /// A closure that takes a `MTLComputeCommandEncoder` and outputs a `MTLBuffer`
+    /// and a `Shape`. See applyMatrixShader(...) for more details.
+    typealias ComputeInputs = (MTLComputeCommandEncoder -> (MTLBuffer, Shape))
+    
     /// The shared instance used to get access to the GPU.
     static let deviceGPU = GPU()
     
@@ -125,9 +129,24 @@ class GPU: MLComputeDevice {
         return result
     }
     
+    
+    // MARK: - Activation Functions
+    
     /// Applies the sigmoid function to each element in `a`.
     func applySigmoid(a: Matrix) -> Matrix {
-        return a
+        let result = applyMatrixShader("sigmoid") { (commandEncoder: MTLComputeCommandEncoder) -> (MTLBuffer, Shape) in
+            let input = a.elements
+            let output = [Float](count: a.elements.count, repeatedValue: 0.0)
+            
+            let inputBuffer = self.device.newBufferWithContents(input)
+            let outputBuffer = self.device.newBufferWithContents(output)
+            commandEncoder.setBuffer(inputBuffer, offset: 0, atIndex: 0)
+            commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 1)
+            
+            return (outputBuffer, a.shape)
+        }
+        
+        return result
     }
     
     
@@ -150,8 +169,13 @@ class GPU: MLComputeDevice {
         return pipeline
     }
     
-    typealias ComputeInputs = (MTLComputeCommandEncoder -> (MTLBuffer, Shape))
+    
     /// Generic function to apply any inputs and Metal shader.
+    ///
+    /// - parameter shader: The name of the shader to run.
+    /// - parameter computeInputs: Use computeInputs to configure the commandEncoder, set the buffers,
+    ///                            and return a reference to the buffer containing the output of the shader, 
+    ///                            and the shape the final result matrix.
     private func applyMatrixShader(shader: String, with computeInputs: ComputeInputs) -> Matrix {
         // Get the shader and configure the command encoder.
         let pipeline = loadComputeShader(shader)
