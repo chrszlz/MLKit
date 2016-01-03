@@ -15,10 +15,14 @@ public struct Shape : Equatable {
     /// The number of columns in this matrix.
     public let columns: Int
     
+    /// The total number of elements
+    public let count: Int
+    
     /// The designated initializer. Creates a Shape with specified `rows` and `columns`.
     public init(_ rows: Int, _ columns: Int) {
         self.rows = rows
         self.columns = columns
+        self.count = rows * columns
     }
 }
 
