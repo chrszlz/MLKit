@@ -23,5 +23,17 @@ class ActivationTests: XCTestCase {
             XCTAssertEqual(s, res.elements[i])
         }
     }
-
+    
+    func testSigmoidGPU() {
+        MLSetComputeMode(.GPU)
+        let sigmoid = Sigmoid(name: "sig1")
+        let m: Matrix = [[0,1], [2,3]]
+        let res = sigmoid.apply(m)
+        
+        for i in 0..<res.elements.count {
+            let e = m.elements[i]
+            let s = 1/(1+expf(e * -1))
+            XCTAssertTrue(s - res.elements[i] < 0.0001)
+        }
+    }
 }
