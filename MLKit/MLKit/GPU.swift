@@ -134,7 +134,7 @@ class GPU: MLComputeDevice {
     
     /// Applies the sigmoid function to each element in `a`.
     func applySigmoid(a: Matrix) -> Matrix {
-        let result = applyMatrixShader("sigmoid") { (commandEncoder: MTLComputeCommandEncoder) -> (MTLBuffer, Shape) in
+        let result = applyMatrixShader("activation_sigmoid") { (commandEncoder: MTLComputeCommandEncoder) -> (MTLBuffer, Shape) in
             let input = a.elements
             let output = [Float](count: a.elements.count, repeatedValue: 0.0)
             
@@ -150,7 +150,19 @@ class GPU: MLComputeDevice {
     }
     
     func applyTanh(a: Matrix) -> Matrix {
-        return a
+        let result = applyMatrixShader("activation_tanh") { (commandEncoder: MTLComputeCommandEncoder) -> (MTLBuffer, Shape) in
+            let input = a.elements
+            let output = [Float](count: a.elements.count, repeatedValue: 0.0)
+            
+            let inputBuffer = self.device.newBufferWithContents(input)
+            let outputBuffer = self.device.newBufferWithContents(output)
+            commandEncoder.setBuffer(inputBuffer, offset: 0, atIndex: 0)
+            commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 1)
+            
+            return (outputBuffer, a.shape)
+        }
+        
+        return result
     }
     
     

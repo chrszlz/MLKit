@@ -64,7 +64,7 @@ class ActivationTests: XCTestCase {
         for i in 0..<res.elements.count {
             let e = m.elements[i]
             let s = tanh(e)
-            XCTAssertEqual(s, res.elements[i])
+            XCTAssertTrue(s - res.elements[i] < 0.0001)
         }
     }
 }
