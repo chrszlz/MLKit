@@ -60,6 +60,9 @@ class CPU: MLComputeDevice {
     
     /// Applies the hyperbolic tangent to each element in `a`.
     func applyTanh(a: Matrix) -> Matrix {
-        return a
+        var res = a
+        vvtanhf(&res.elements, a.elements, [Int32(a.elements.count)])
+        
+        return res
     }
 }
