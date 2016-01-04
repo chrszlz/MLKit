@@ -149,6 +149,10 @@ class GPU: MLComputeDevice {
         return result
     }
     
+    func applyTanh(a: Matrix) -> Matrix {
+        return a
+    }
+    
     
     // MARK: - Private Methods
     

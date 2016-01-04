@@ -57,4 +57,9 @@ class CPU: MLComputeDevice {
         vvpowsf(&output.elements, &negOne, output.elements, [count])
         return output
     }
+    
+    /// Applies the hyperbolic tangent to each element in `a`.
+    func applyTanh(a: Matrix) -> Matrix {
+        return a
+    }
 }

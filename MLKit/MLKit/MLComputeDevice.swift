@@ -29,4 +29,7 @@ public protocol MLComputeDevice {
     
     /// Applies the sigmoid function to each element in `a`.
     func applySigmoid(a: Matrix) -> Matrix
+    
+    /// Applies the hyperbolic tangent to each element in `a`.
+    func applyTanh(a: Matrix) -> Matrix
 }
