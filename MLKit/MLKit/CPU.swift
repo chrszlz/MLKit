@@ -65,4 +65,8 @@ class CPU: MLComputeDevice {
         
         return res
     }
+    
+    func applyRelu(a: Matrix) -> Matrix {
+        return a
+    }
 }

@@ -149,6 +149,7 @@ class GPU: MLComputeDevice {
         return result
     }
     
+    /// Applies the hyperbolic tangent to each element in `a`.
     func applyTanh(a: Matrix) -> Matrix {
         let result = applyMatrixShader("activation_tanh") { (commandEncoder: MTLComputeCommandEncoder) -> (MTLBuffer, Shape) in
             let input = a.elements
@@ -163,6 +164,11 @@ class GPU: MLComputeDevice {
         }
         
         return result
+    }
+    
+    /// Applies the rectified linear activation function to each element in `a`.
+    func applyRelu(a: Matrix) -> Matrix {
+        return a
     }
     
     
