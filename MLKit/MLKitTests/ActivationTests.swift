@@ -67,4 +67,39 @@ class ActivationTests: XCTestCase {
             XCTAssertTrue(s - res.elements[i] < 0.0001)
         }
     }
+    
+    
+    // MARK: - ReLU
+    
+    func testReluCPU() {
+        MLSetComputeMode(.CPU)
+        let relu = ReLU(name: "relu1")
+        let m: Matrix = [[0,1], [2,3]]
+        let res = relu.apply(m)
+        
+        for i in 0..<res.elements.count {
+            let e = m.elements[i]
+            if (e > 0) {
+                XCTAssertEqual(e, res.elements[i])
+            } else {
+                XCTAssertEqual(0, res.elements[i])
+            }
+        }
+    }
+    
+    func testReluGPU() {
+        MLSetComputeMode(.GPU)
+        let relu = ReLU(name: "relu1")
+        let m: Matrix = [[0,1], [2,3]]
+        let res = relu.apply(m)
+        
+        for i in 0..<res.elements.count {
+            let e = m.elements[i]
+            if (e > 0) {
+                XCTAssertEqual(e, res.elements[i])
+            } else {
+                XCTAssertEqual(0, res.elements[i])
+            }
+        }
+    }
 }
