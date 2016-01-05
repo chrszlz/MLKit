@@ -66,7 +66,12 @@ class CPU: MLComputeDevice {
         return res
     }
     
+    /// Applies the rectified linear activation function to each element in `a`.
     func applyRelu(a: Matrix) -> Matrix {
-        return a
+        var res = a
+        var zero: Float = 0.0
+        vDSP_vthres(a.elements, 1, &zero, &res.elements, 1, vDSP_Length(res.elements.count))
+        
+        return res
     }
 }
