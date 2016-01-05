@@ -168,7 +168,19 @@ class GPU: MLComputeDevice {
     
     /// Applies the rectified linear activation function to each element in `a`.
     func applyRelu(a: Matrix) -> Matrix {
-        return a
+        let result = applyMatrixShader("activation_relu") { (commandEncoder: MTLComputeCommandEncoder) -> (MTLBuffer, Shape) in
+            let input = a.elements
+            let output = [Float](count: a.elements.count, repeatedValue: 0.0)
+            
+            let inputBuffer = self.device.newBufferWithContents(input)
+            let outputBuffer = self.device.newBufferWithContents(output)
+            commandEncoder.setBuffer(inputBuffer, offset: 0, atIndex: 0)
+            commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 1)
+            
+            return (outputBuffer, a.shape)
+        }
+        
+        return result
     }
     
     

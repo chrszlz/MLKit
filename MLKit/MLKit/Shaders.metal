@@ -46,3 +46,10 @@ kernel void activation_tanh(const device float *input [[ buffer(0) ]],
                                uint gid [[ thread_position_in_grid ]]) {
     output[gid] = tanh(input[gid]);
 }
+
+// Applies the relu activation function to each element in input.
+kernel void activation_relu(const device float *input [[ buffer(0) ]],
+                            device float *output [[ buffer(1) ]],
+                            uint gid [[ thread_position_in_grid ]]) {
+    output[gid] = max(0.0, input[gid]);
+}
