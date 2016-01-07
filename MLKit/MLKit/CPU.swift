@@ -81,6 +81,19 @@ class CPU: MLComputeDevice {
         return res
     }
     
+    /// Applies the derivative of the hyperbolic tangent to each element in `a`.
+    func applyTanhDerivative(a: Matrix) -> Matrix {
+        var output = applyTanh(a)
+        let count = output.elements.count
+        var one: Float = 1.0
+        var twos = [Float](count: count, repeatedValue: 2)
+        vvpowf(&output.elements, &twos, output.elements, [Int32(count)])
+        vDSP_vneg(output.elements, 1, &output.elements, 1, vDSP_Length(count))
+        vDSP_vsadd(output.elements, 1, &one, &output.elements, 1, vDSP_Length(count))
+        
+        return output
+    }
+    
     /// Applies the rectified linear activation function to each element in `a`.
     func applyRelu(a: Matrix) -> Matrix {
         var res = a

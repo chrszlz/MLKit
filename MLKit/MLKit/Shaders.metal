@@ -55,6 +55,14 @@ kernel void activation_tanh(const device float *input [[ buffer(0) ]],
     output[gid] = tanh(input[gid]);
 }
 
+// Applies the derivative of the tanh function to each element in input.
+kernel void activation_tanh_derivative(const device float *input [[ buffer(0) ]],
+                            device float *output [[ buffer(1) ]],
+                            uint gid [[ thread_position_in_grid ]]) {
+    float res = tanh(input[gid]);
+    output[gid] = 1.0 - pow(res, 2.0);
+}
+
 // Applies the relu activation function to each element in input.
 kernel void activation_relu(const device float *input [[ buffer(0) ]],
                             device float *output [[ buffer(1) ]],

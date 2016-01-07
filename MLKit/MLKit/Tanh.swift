@@ -25,6 +25,6 @@ public struct Tanh: Activation {
     
     /// Applies the derivative of the Tanh function to `input`.
     public func applyDerivative(input: Matrix) -> Matrix {
-        return MLComputeOptions.computeDevice.applyTanh(input)
+        return MLComputeOptions.computeDevice.applyTanhDerivative(input)
     }
 }

@@ -36,6 +36,9 @@ public protocol MLComputeDevice {
     /// Applies the hyperbolic tangent to each element in `a`.
     func applyTanh(a: Matrix) -> Matrix
     
+    /// Applies the derivative of the hyperbolic tangent to each element in `a`.
+    func applyTanhDerivative(a: Matrix) -> Matrix
+    
     /// Applies the Rectified Linear activation to each element in `a`.
     func applyRelu(a: Matrix) -> Matrix
 }

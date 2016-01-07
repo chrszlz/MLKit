@@ -11,7 +11,7 @@ import XCTest
 
 class ActivationTests: XCTestCase {
     
-    // MARK: - Sigmoid
+    // MARK: - Sigmoid Tests
     
     func testSigmoidCPU() {
         MLSetComputeMode(.CPU)
@@ -67,7 +67,7 @@ class ActivationTests: XCTestCase {
         }
     }
     
-    // MARK: - Tanh
+    // MARK: - Tanh Tests
     
     func testTanhCPU() {
         MLSetComputeMode(.CPU)
@@ -95,8 +95,36 @@ class ActivationTests: XCTestCase {
         }
     }
     
+    func testTanhDerivativeCPU() {
+        MLSetComputeMode(.CPU)
+        let tanh_b = Tanh(name: "tanh1")
+        let m: Matrix = [[0,1], [2,3]]
+        let res = tanh_b.applyDerivative(m)
+        
+        for i in 0..<res.elements.count {
+            let e = m.elements[i]
+            let s = tanh(e)
+            let d = 1 - powf(s, 2.0)
+            XCTAssertTrue(d - res.elements[i] < 0.0001)
+        }
+    }
     
-    // MARK: - ReLU
+    func testTanhDerivativeGPU() {
+        MLSetComputeMode(.CPU)
+        let tanh_b = Tanh(name: "tanh1")
+        let m: Matrix = [[0,1], [2,3]]
+        let res = tanh_b.applyDerivative(m)
+        
+        for i in 0..<res.elements.count {
+            let e = m.elements[i]
+            let s = tanh(e)
+            let d = 1 - powf(s, 2.0)
+            XCTAssertTrue(d - res.elements[i] < 0.0001)
+        }
+    }
+    
+    
+    // MARK: - ReLU Tests
     
     func testReluCPU() {
         MLSetComputeMode(.CPU)
