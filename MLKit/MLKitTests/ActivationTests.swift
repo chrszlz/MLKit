@@ -110,7 +110,7 @@ class ActivationTests: XCTestCase {
     }
     
     func testTanhDerivativeGPU() {
-        MLSetComputeMode(.CPU)
+        MLSetComputeMode(.GPU)
         let tanh_b = Tanh(name: "tanh1")
         let m: Matrix = [[0,1], [2,3]]
         let res = tanh_b.applyDerivative(m)
