@@ -40,6 +40,14 @@ kernel void activation_sigmoid(const device float *input [[ buffer(0) ]],
     output[gid] = 1.0/(1.0 + exp(-1.0 * input[gid]));
 }
 
+// Applies the derivative of the sigmoid function to each element in input.
+kernel void activation_sigmoid_derivative(const device float *input [[ buffer(0) ]],
+                               device float *output [[ buffer(1) ]],
+                               uint gid [[ thread_position_in_grid ]]) {
+    float s = 1.0/(1.0 + exp(-1.0 * input[gid]));
+    output[gid] = s * (1 - s);
+}
+
 // Applies the tanh function to each element in input.
 kernel void activation_tanh(const device float *input [[ buffer(0) ]],
                                device float *output [[ buffer(1) ]],

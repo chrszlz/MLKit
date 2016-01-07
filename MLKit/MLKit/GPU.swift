@@ -149,6 +149,23 @@ class GPU: MLComputeDevice {
         return result
     }
     
+    /// Applies the derivative of the sigmoid function to each element in `a`.
+    func applySigmoidDerivative(a: Matrix) -> Matrix {
+        let result = applyMatrixShader("activation_sigmoid_derivative") { (commandEncoder: MTLComputeCommandEncoder) -> (MTLBuffer, Shape) in
+            let input = a.elements
+            let output = [Float](count: a.elements.count, repeatedValue: 0.0)
+            
+            let inputBuffer = self.device.newBufferWithContents(input)
+            let outputBuffer = self.device.newBufferWithContents(output)
+            commandEncoder.setBuffer(inputBuffer, offset: 0, atIndex: 0)
+            commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 1)
+            
+            return (outputBuffer, a.shape)
+        }
+        
+        return result
+    }
+    
     /// Applies the hyperbolic tangent to each element in `a`.
     func applyTanh(a: Matrix) -> Matrix {
         let result = applyMatrixShader("activation_tanh") { (commandEncoder: MTLComputeCommandEncoder) -> (MTLBuffer, Shape) in

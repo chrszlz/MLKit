@@ -58,6 +58,21 @@ class CPU: MLComputeDevice {
         return output
     }
     
+    /// Applies the derivative of the sigmoid function to each element in `a`.
+    func applySigmoidDerivative(a: Matrix) -> Matrix {
+        let sigmoid = applySigmoid(a)
+        var oneMinusSigmoid = sigmoid
+        var one: Float = 1.0
+        let count = sigmoid.elements.count
+        vDSP_vneg(sigmoid.elements, 1, &oneMinusSigmoid.elements, 1, vDSP_Length(count))
+        vDSP_vsadd(oneMinusSigmoid.elements, 1, &one, &oneMinusSigmoid.elements, 1, vDSP_Length(count))
+        
+        var output = Matrix.zeros(a.shape)
+        vDSP_vmul(sigmoid.elements, 1, oneMinusSigmoid.elements, 1, &output.elements, 1, vDSP_Length(count))
+
+        return output
+    }
+    
     /// Applies the hyperbolic tangent to each element in `a`.
     func applyTanh(a: Matrix) -> Matrix {
         var res = a

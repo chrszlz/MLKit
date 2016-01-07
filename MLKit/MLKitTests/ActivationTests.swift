@@ -39,6 +39,33 @@ class ActivationTests: XCTestCase {
         }
     }
     
+    func testSigmoidDerivativeCPU() {
+        MLSetComputeMode(.CPU)
+        let sigmoid = Sigmoid(name: "sig1")
+        let m: Matrix = [[0,1], [2,3]]
+        let res = sigmoid.applyDerivative(m)
+        
+        for i in 0..<res.elements.count {
+            let e = m.elements[i]
+            let s = 1/(1+expf(e * -1))
+            let d = s * (1-s)
+            XCTAssertEqual(d, res.elements[i])
+        }
+    }
+    
+    func testSigmoidDerivativeGPU() {
+        MLSetComputeMode(.GPU)
+        let sigmoid = Sigmoid(name: "sig1")
+        let m: Matrix = [[0,1], [2,3]]
+        let res = sigmoid.applyDerivative(m)
+        
+        for i in 0..<res.elements.count {
+            let e = m.elements[i]
+            let s = 1/(1+expf(e * -1))
+            let d = s * (1-s)
+            XCTAssertTrue(d - res.elements[i] < 0.0001)
+        }
+    }
     
     // MARK: - Tanh
     

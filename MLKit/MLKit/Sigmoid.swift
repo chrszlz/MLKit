@@ -25,6 +25,6 @@ public struct Sigmoid: Activation {
     
     /// Applies the derivative of the sigmoid function to `input`.
     public func applyDerivative(input: Matrix) -> Matrix {
-        return MLComputeOptions.computeDevice.applySigmoid(input)
+        return MLComputeOptions.computeDevice.applySigmoidDerivative(input)
     }
 }
