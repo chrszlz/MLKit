@@ -25,6 +25,6 @@ struct ReLU: Activation {
     
     /// Applies the ReLU activation function derivative to each element in `input`.
     func applyDerivative(input: Matrix) -> Matrix {
-        return MLComputeOptions.computeDevice.applyRelu(input)
+        return MLComputeOptions.computeDevice.applyReluDerivative(input)
     }
 }

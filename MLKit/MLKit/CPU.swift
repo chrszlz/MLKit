@@ -102,4 +102,15 @@ class CPU: MLComputeDevice {
         
         return res
     }
+    
+    /// Applies the Rectified Linear activation derivative to each element in `a`.
+    func applyReluDerivative(a: Matrix) -> Matrix {
+        var output = a
+        
+        for i in 0..<a.elements.count {
+            output.elements[i] = (a.elements[i] == 0) ? 0 : 1
+        }
+        
+        return output
+    }
 }

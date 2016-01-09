@@ -217,6 +217,23 @@ class GPU: MLComputeDevice {
         return result
     }
     
+    /// Applies the Rectified Linear activation derivative to each element in `a`.
+    func applyReluDerivative(a: Matrix) -> Matrix {
+        let result = applyMatrixShader("activation_relu_derivative") { (commandEncoder: MTLComputeCommandEncoder) -> (MTLBuffer, Shape) in
+            let input = a.elements
+            let output = [Float](count: a.elements.count, repeatedValue: 0.0)
+            
+            let inputBuffer = self.device.newBufferWithContents(input)
+            let outputBuffer = self.device.newBufferWithContents(output)
+            commandEncoder.setBuffer(inputBuffer, offset: 0, atIndex: 0)
+            commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 1)
+            
+            return (outputBuffer, a.shape)
+        }
+        
+        return result
+    }
+    
     
     // MARK: - Private Methods
     

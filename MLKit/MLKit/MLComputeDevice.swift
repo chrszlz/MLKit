@@ -41,4 +41,7 @@ public protocol MLComputeDevice {
     
     /// Applies the Rectified Linear activation to each element in `a`.
     func applyRelu(a: Matrix) -> Matrix
+    
+    /// Applies the Rectified Linear activation derivative to each element in `a`.
+    func applyReluDerivative(a: Matrix) -> Matrix
 }

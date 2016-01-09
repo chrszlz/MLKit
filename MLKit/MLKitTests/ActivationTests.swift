@@ -129,7 +129,7 @@ class ActivationTests: XCTestCase {
     func testReluCPU() {
         MLSetComputeMode(.CPU)
         let relu = ReLU(name: "relu1")
-        let m: Matrix = [[0,1], [2,3]]
+        let m: Matrix = [[0,-1], [2,3]]
         let res = relu.apply(m)
         
         for i in 0..<res.elements.count {
@@ -145,7 +145,7 @@ class ActivationTests: XCTestCase {
     func testReluGPU() {
         MLSetComputeMode(.GPU)
         let relu = ReLU(name: "relu1")
-        let m: Matrix = [[0,1], [2,3]]
+        let m: Matrix = [[0,-1], [2,3]]
         let res = relu.apply(m)
         
         for i in 0..<res.elements.count {
@@ -156,5 +156,29 @@ class ActivationTests: XCTestCase {
                 XCTAssertEqual(0, res.elements[i])
             }
         }
+    }
+    
+    func testReluDerivativeCPU() {
+        MLSetComputeMode(.CPU)
+        let relu = ReLU(name: "relu1")
+        let m: Matrix = [[0,1], [2,3]]
+        let res = relu.applyDerivative(m)
+        
+        XCTAssertEqual(0, res.elements[0])
+        XCTAssertEqual(1, res.elements[1])
+        XCTAssertEqual(1, res.elements[2])
+        XCTAssertEqual(1, res.elements[3])
+    }
+    
+    func testReluDerivativeGPU() {
+        MLSetComputeMode(.GPU)
+        let relu = ReLU(name: "relu1")
+        let m: Matrix = [[0,1], [2,3]]
+        let res = relu.applyDerivative(m)
+        
+        XCTAssertEqual(0, res.elements[0])
+        XCTAssertEqual(1, res.elements[1])
+        XCTAssertEqual(1, res.elements[2])
+        XCTAssertEqual(1, res.elements[3])
     }
 }
