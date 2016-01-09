@@ -25,7 +25,7 @@ public protocol MLComputeDevice {
     func scaleMatrix(a: Matrix, by c: Float) ->  Matrix
     
     
-    // MARK: - Activations
+    // MARK: - Activation Functions
     
     /// Applies the sigmoid function to each element in `a`.
     func applySigmoid(a: Matrix) -> Matrix
@@ -44,4 +44,7 @@ public protocol MLComputeDevice {
     
     /// Applies the Rectified Linear activation derivative to each element in `a`.
     func applyReluDerivative(a: Matrix) -> Matrix
+    
+    /// Applies the softmax function to `a`.
+    func applySoftmax(a: Matrix) -> Matrix
 }

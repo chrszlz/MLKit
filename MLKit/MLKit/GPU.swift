@@ -234,6 +234,11 @@ class GPU: MLComputeDevice {
         return result
     }
     
+    /// Applies the softmax function to `a`.
+    func applySoftmax(a: Matrix) -> Matrix {
+        return a
+    }
+    
     
     // MARK: - Private Methods
     

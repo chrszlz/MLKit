@@ -8,18 +8,18 @@
 
 import Foundation
 
-struct Softmax: MLBlock {
+public struct Softmax: MLBlock {
     
     /// The name of the Softmax block.
-    let name: String
+    public let name: String
     
     /// Initializes a Softmax block with name `name`.
-    init(name: String) {
+    public init(name: String) {
         self.name = name
     }
     
     /// Applies the softmax function to `input`.
-    func apply(input: Matrix) -> Matrix {
-        return input
+    public func apply(input: Matrix) -> Matrix {
+        return MLComputeOptions.computeDevice.applySoftmax(input)
     }
 }

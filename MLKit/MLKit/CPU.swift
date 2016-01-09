@@ -13,6 +13,8 @@ import Accelerate
 /// fast matrix computations.
 class CPU: MLComputeDevice {
     
+    // MARK: - Matrix Operations
+    
     /// Returns `a` + `b`.
     func addMatrices(a a: Matrix, b: Matrix) -> Matrix {
         var res = b        
@@ -44,6 +46,9 @@ class CPU: MLComputeDevice {
         
         return res
     }
+    
+    
+    // MARK: - Activation Functions
     
     /// Applies the sigmoid function to each element in `a`.
     func applySigmoid(a: Matrix) -> Matrix {
@@ -106,11 +111,21 @@ class CPU: MLComputeDevice {
     /// Applies the Rectified Linear activation derivative to each element in `a`.
     func applyReluDerivative(a: Matrix) -> Matrix {
         var output = a
-        
         for i in 0..<a.elements.count {
             output.elements[i] = (a.elements[i] == 0) ? 0 : 1
         }
         
         return output
+    }
+    
+    /// Applies the softmax function to `a`.
+    func applySoftmax(a: Matrix) -> Matrix {
+        var output = a
+        var sum: Float = 0
+        let count = a.elements.count
+        vvexpf(&output.elements, a.elements, [Int32(count)])
+        vDSP_sve(output.elements, 1, &sum, vDSP_Length(count))
+        
+        return scaleMatrix(output, by: 1/sum)
     }
 }
