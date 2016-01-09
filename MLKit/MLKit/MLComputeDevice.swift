@@ -24,6 +24,9 @@ public protocol MLComputeDevice {
     /// Multiplies each element in `a` by `c`.
     func scaleMatrix(a: Matrix, by c: Float) ->  Matrix
     
+    /// Returns the sum of all the elements in `a`.
+    func sumMatrix(a: Matrix) -> Float
+    
     
     // MARK: - Activation Functions
     

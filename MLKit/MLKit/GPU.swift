@@ -129,6 +129,24 @@ class GPU: MLComputeDevice {
         return result
     }
     
+    /// Returns the sum of the elements in `a`.
+    func sumMatrix(a: Matrix) -> Float {
+        // TODO: Fix this
+        let result = applyMatrixShader("matrix_sum") { (commandEncoder: MTLComputeCommandEncoder) -> (MTLBuffer, Shape) in
+            let input = a.elements
+            let output = [Float](count: 1, repeatedValue: 0)
+            
+            let inputBuffer = self.device.newBufferWithContents(input)
+            let outputBuffer = self.device.newBufferWithContents(output)
+            commandEncoder.setBuffer(inputBuffer, offset: 0, atIndex: 0)
+            commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 1)
+            
+            return (outputBuffer, Shape(1, 1))
+        }
+        
+        return result.elements[0]
+    }
+    
     
     // MARK: - Activation Functions
     

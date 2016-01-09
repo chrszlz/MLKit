@@ -148,6 +148,12 @@ public struct Matrix: Equatable {
     
     // MARK: - Operations
     
+    /// Returns the sum of all the elements in this matrix.
+    public func sum() -> Float {
+        // TODO: Change this to MLComputeDevice once implemented in GPU.
+        return CPU().sumMatrix(self)
+    }
+    
     /// Returns the transpose of this matrix.
     private func transpose() -> Matrix {
         var res = Matrix.zeros(rows: self.columns, columns: self.rows)

@@ -9,6 +9,7 @@
 #include <metal_stdlib>
 using namespace metal;
 
+
 // Multiplies each element in a matrix by some scalar.
 kernel void matrix_scale(constant float &scalingFactor [[buffer(0)]],
                         const device float *input [[buffer(1)]],
@@ -32,6 +33,15 @@ kernel void matrix_subtract(const device float *input1 [[ buffer(0) ]],
                             uint gid [[ thread_position_in_grid ]]) {
     output[gid] = input1[gid] - input2[gid];
 }
+
+// Sums all the elements in the input matrix together.
+kernel void matrix_sum(const device float *input1 [[ buffer(0) ]],
+                       device float *output [[ buffer(1) ]],
+                       uint gid [[ thread_position_in_grid ]]) {
+    output[0] += input1[gid];
+}
+
+
 
 // Applies the sigmoid function to each element in input.
 kernel void activation_sigmoid(const device float *input [[ buffer(0) ]],

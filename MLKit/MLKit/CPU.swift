@@ -47,6 +47,13 @@ class CPU: MLComputeDevice {
         return res
     }
     
+    /// Returns the sum of the elements in `a`.
+    func sumMatrix(a: Matrix) -> Float {
+        var res: Float = 0
+        vDSP_sve(a.elements, 1, &res, vDSP_Length(a.elements.count))
+        
+        return res
+    }
     
     // MARK: - Activation Functions
     

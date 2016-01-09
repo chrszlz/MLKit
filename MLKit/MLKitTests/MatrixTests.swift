@@ -78,4 +78,14 @@ class MatrixTests: XCTestCase {
         let res = x * y
         XCTAssert(res == Matrix([[16, 19], [36, 43]]))
     }
+    
+    
+    // MARK: - Matrix Sum Tests
+    
+    func testMatrixSumCPU() {
+        MLSetComputeMode(.CPU)
+        let x = Matrix([[1,2], [3,4]])
+        let res = x.sum()
+        XCTAssertEqual(res, Float(10.0))
+    }
 }
