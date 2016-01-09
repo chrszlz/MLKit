@@ -11,7 +11,7 @@ import Foundation
 struct ReLU: Activation {
     
     /// The name of the ReLU block.
-    var name: String
+    let name: String
     
     /// Initializes a ReLU activation block with name `name`.
     init(name: String) {

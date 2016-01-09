@@ -28,6 +28,7 @@
 		93C37C3B1C2654D100BF739E /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93C37C3A1C2654D100BF739E /* Shaders.metal */; };
 		93D7E4651C378AFC00A20DD9 /* Sigmoid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D7E4641C378AFC00A20DD9 /* Sigmoid.swift */; };
 		93D7E4691C378C9600A20DD9 /* ActivationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D7E4681C378C9600A20DD9 /* ActivationTests.swift */; };
+		93DECFEE1C40ECBB006A3252 /* Softmax.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DECFED1C40ECBB006A3252 /* Softmax.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 		93C37C3A1C2654D100BF739E /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		93D7E4641C378AFC00A20DD9 /* Sigmoid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sigmoid.swift; sourceTree = "<group>"; };
 		93D7E4681C378C9600A20DD9 /* ActivationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivationTests.swift; sourceTree = "<group>"; };
+		93DECFED1C40ECBB006A3252 /* Softmax.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Softmax.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 				93D7E4641C378AFC00A20DD9 /* Sigmoid.swift */,
 				939FF50F1C3A5C2A00AB0ABA /* Tanh.swift */,
 				93BF3A241C3B410600EA7302 /* ReLU.swift */,
+				93DECFED1C40ECBB006A3252 /* Softmax.swift */,
 			);
 			name = MLBlocks;
 			sourceTree = "<group>";
@@ -295,6 +298,7 @@
 				93658A241C30820D00CD1FBE /* MLBlock.swift in Sources */,
 				934535AF1C2A06BD0056273F /* MLComputeDevice.swift in Sources */,
 				9324D0911C30949100FF7DF9 /* Layer.swift in Sources */,
+				93DECFEE1C40ECBB006A3252 /* Softmax.swift in Sources */,
 				93C37C3B1C2654D100BF739E /* Shaders.metal in Sources */,
 				93A98FE71C30B30700DC475D /* NeuralNetwork.swift in Sources */,
 				934535B51C2A0EE10056273F /* MLComputeOptions.swift in Sources */,

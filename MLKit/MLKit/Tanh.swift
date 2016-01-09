@@ -11,7 +11,7 @@ import Foundation
 public struct Tanh: Activation {
     
     /// The name of the Tanh activation block.
-    public var name: String
+    public let name: String
     
     /// Initializes a Tanh MLBlock with name `name`.
     public init(name: String) {

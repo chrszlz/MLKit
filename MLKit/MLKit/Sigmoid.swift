@@ -11,7 +11,7 @@ import Foundation
 public struct Sigmoid: Activation {
     
     /// The name of the sigmoid activation block.
-    public var name: String
+    public let name: String
     
     /// Initializes a Sigmoid MLBlock with name `name`.
     public init(name: String) {

@@ -13,7 +13,7 @@ import Foundation
 public protocol MLBlock {
     
     /// The name of the `MLBlock`.
-    var name: String { get set }
+    var name: String { get }
     
     /// Returns a `Matrix` by applying some transform to `input`.
     func apply(input: Matrix) -> Matrix

@@ -11,7 +11,7 @@ import Foundation
 public struct InnerProduct: Layer {
     
     /// The name of the layer.
-    public var name: String
+    public let name: String
     
     /// The weights for this layer.
     public var weights: Matrix
