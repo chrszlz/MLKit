@@ -41,7 +41,12 @@ kernel void matrix_sum(const device float *input1 [[ buffer(0) ]],
     output[0] += input1[gid];
 }
 
-
+// Exponentiates each element in the matrix.
+kernel void matrix_exp(const device float *input [[ buffer(0) ]],
+                       device float *output [[ buffer(1) ]],
+                       uint gid [[ thread_position_in_grid ]]) {
+    output[gid] = exp(input[gid]);
+}
 
 // Applies the sigmoid function to each element in input.
 kernel void activation_sigmoid(const device float *input [[ buffer(0) ]],

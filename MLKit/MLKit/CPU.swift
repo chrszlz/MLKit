@@ -55,6 +55,14 @@ class CPU: MLComputeDevice {
         return res
     }
     
+    /// Exponentiates each element in `a`.
+    func expMatrix(a: Matrix) -> Matrix {
+        var output = a
+        vvexpf(&output.elements, a.elements, [Int32(a.elements.count)])
+        return output
+    }
+    
+    
     // MARK: - Activation Functions
     
     /// Applies the sigmoid function to each element in `a`.

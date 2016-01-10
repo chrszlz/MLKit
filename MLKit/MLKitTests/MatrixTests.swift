@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import MLKit
+@testable import MLKit
 
 class MatrixTests: XCTestCase {
     
@@ -87,5 +87,27 @@ class MatrixTests: XCTestCase {
         let x = Matrix([[1,2], [3,4]])
         let res = x.sum()
         XCTAssertEqual(res, Float(10.0))
+    }
+    
+    // MARK: - Matrix Exp Tests
+    
+    func testMatrixExpCPU() {
+        MLSetComputeMode(.CPU)
+        let x = Matrix([[1,2], [3,4]])
+        let res = x.exp()
+        
+        for i in 0..<x.elements.count {
+            XCTAssertTrue(res.elements[i] - exp(x.elements[i]) < 0.0001)
+        }
+    }
+    
+    func testMatrixExpGPU() {
+        MLSetComputeMode(.GPU)
+        let x = Matrix([[1,2], [3,4]])
+        let res = x.exp()
+        
+        for i in 0..<x.elements.count {
+            XCTAssertTrue(res.elements[i] - exp(x.elements[i]) < 0.0001)
+        }
     }
 }

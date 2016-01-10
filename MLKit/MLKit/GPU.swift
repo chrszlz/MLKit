@@ -147,6 +147,22 @@ class GPU: MLComputeDevice {
         return result.elements[0]
     }
     
+    /// Exponentiates each element in `a`.
+    func expMatrix(a: Matrix) -> Matrix {
+        let result = applyMatrixShader("matrix_exp") { (commandEncoder: MTLComputeCommandEncoder) -> (MTLBuffer, Shape) in
+            let input = a.elements
+            let output = [Float](count: a.elements.count, repeatedValue: 0)
+            
+            let inputBuffer = self.device.newBufferWithContents(input)
+            let outputBuffer = self.device.newBufferWithContents(output)
+            commandEncoder.setBuffer(inputBuffer, offset: 0, atIndex: 0)
+            commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 1)
+            
+            return (outputBuffer, Shape(1, 1))
+        }
+        
+        return result
+    }
     
     // MARK: - Activation Functions
     

@@ -154,6 +154,10 @@ public struct Matrix: Equatable {
         return CPU().sumMatrix(self)
     }
     
+    public func exp() -> Matrix {
+        return self
+    }
+    
     /// Returns the transpose of this matrix.
     private func transpose() -> Matrix {
         var res = Matrix.zeros(rows: self.columns, columns: self.rows)

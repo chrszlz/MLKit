@@ -27,6 +27,8 @@ public protocol MLComputeDevice {
     /// Returns the sum of all the elements in `a`.
     func sumMatrix(a: Matrix) -> Float
     
+    /// Exponentiates each element in `a`.
+    func expMatrix(a: Matrix) -> Matrix
     
     // MARK: - Activation Functions
     
