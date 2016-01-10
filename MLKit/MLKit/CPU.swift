@@ -132,15 +132,4 @@ class CPU: MLComputeDevice {
         
         return output
     }
-    
-    /// Applies the softmax function to `a`.
-    func applySoftmax(a: Matrix) -> Matrix {
-        var output = a
-        var sum: Float = 0
-        let count = a.elements.count
-        vvexpf(&output.elements, a.elements, [Int32(count)])
-        vDSP_sve(output.elements, 1, &sum, vDSP_Length(count))
-        
-        return scaleMatrix(output, by: 1/sum)
-    }
 }
