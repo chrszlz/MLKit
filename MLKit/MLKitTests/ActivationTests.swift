@@ -181,4 +181,33 @@ class ActivationTests: XCTestCase {
         XCTAssertEqual(1, res.elements[2])
         XCTAssertEqual(1, res.elements[3])
     }
+    
+    
+    // MARK: - Softmax Tests
+    
+    func testSoftmaxCPU() {
+        MLSetComputeMode(.CPU)
+        let softmax = Softmax(name: "softmax")
+        let m: Matrix = [[0,1], [2,3]]
+        let m_exp = m.exp()
+        let sum = m_exp.sum()
+        let res = softmax.apply(m)
+        
+        for i in 0..<m.elements.count {
+            XCTAssertTrue(res.elements[i] - (m_exp.elements[i] * 1/sum) < 0.0001)
+        }
+    }
+    
+    func testSoftmaxGPU() {
+        MLSetComputeMode(.GPU)
+        let softmax = Softmax(name: "softmax")
+        let m: Matrix = [[0,1], [2,3]]
+        let m_exp = m.exp()
+        let sum = m_exp.sum()
+        let res = softmax.apply(m)
+        
+        for i in 0..<m.elements.count {
+            XCTAssertTrue(res.elements[i] - (m_exp.elements[i] * 1/sum) < 0.0001)
+        }
+    }
 }
