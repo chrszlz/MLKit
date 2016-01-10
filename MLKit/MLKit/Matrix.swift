@@ -155,7 +155,7 @@ public struct Matrix: Equatable {
     }
     
     public func exp() -> Matrix {
-        return self
+        return MLComputeOptions.computeDevice.expMatrix(self)
     }
     
     /// Returns the transpose of this matrix.

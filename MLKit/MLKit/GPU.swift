@@ -158,7 +158,7 @@ class GPU: MLComputeDevice {
             commandEncoder.setBuffer(inputBuffer, offset: 0, atIndex: 0)
             commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 1)
             
-            return (outputBuffer, Shape(1, 1))
+            return (outputBuffer, a.shape)
         }
         
         return result
