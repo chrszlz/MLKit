@@ -16,5 +16,5 @@ public protocol MLBlock {
     var name: String { get }
     
     /// Returns a `Matrix` by applying some transform to `input`.
-    func apply(input: Matrix) -> Matrix
+    func apply(_ input: Matrix) -> Matrix
 }

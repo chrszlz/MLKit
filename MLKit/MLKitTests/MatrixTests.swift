@@ -15,7 +15,7 @@ class MatrixTests: XCTestCase {
     // MARK: - Matrix Addition Tests
     
     func testMatrixAddCPU() {
-        MLSetComputeMode(.CPU)
+        MLSetComputeMode(.cpu)
         let x = Matrix([[1,2], [3,4]])
         let y = Matrix([[1,2], [3,4]])
         let res = x + y
@@ -23,7 +23,7 @@ class MatrixTests: XCTestCase {
     }
     
     func testMatrixAddGPU() {
-        MLSetComputeMode(.GPU)
+        MLSetComputeMode(.gpu)
         let x = Matrix([[1,2], [3,4]])
         let y = Matrix([[1,2], [3,4]])
         let res = x + y
@@ -34,7 +34,7 @@ class MatrixTests: XCTestCase {
     // MARK: - Matrix Subtraction Tests
     
     func testMatrixSubtractCPU() {
-        MLSetComputeMode(.CPU)
+        MLSetComputeMode(.cpu)
         let x = Matrix([[1,2], [3,4]])
         let y = Matrix([[0,1], [2,3]])
         let res = x - y
@@ -42,7 +42,7 @@ class MatrixTests: XCTestCase {
     }
     
     func testMatrixSubtractGPU() {
-        MLSetComputeMode(.GPU)
+        MLSetComputeMode(.gpu)
         let x = Matrix([[1,2], [3,4]])
         let y = Matrix([[0,1], [2,3]])
         let res = x - y
@@ -53,7 +53,7 @@ class MatrixTests: XCTestCase {
     // MARK: - Matrix Scale Tests
     
     func testMatrixScaleCPU() {
-        MLSetComputeMode(.CPU)
+        MLSetComputeMode(.cpu)
         let x = Matrix.ones(rows: 2, columns: 2)
         let c: Float = 2.0
         let res = c * x
@@ -61,7 +61,7 @@ class MatrixTests: XCTestCase {
     }
 
     func testMatrixScaleGPU() {
-        MLSetComputeMode(.GPU)
+        MLSetComputeMode(.gpu)
         let x = Matrix.ones(rows: 2, columns: 2)
         let c: Float = 2.0
         let res = c * x
@@ -72,7 +72,7 @@ class MatrixTests: XCTestCase {
     // MARK: - Matrix Multiplication Tests
     
     func testMatrixMultiplyCPU() {
-        MLSetComputeMode(.CPU)
+        MLSetComputeMode(.cpu)
         let x = Matrix([[1,2], [3,4]])
         let y = Matrix([[4,5], [6,7]])
         let res = x * y
@@ -83,7 +83,7 @@ class MatrixTests: XCTestCase {
     // MARK: - Matrix Sum Tests
     
     func testMatrixSumCPU() {
-        MLSetComputeMode(.CPU)
+        MLSetComputeMode(.cpu)
         let x = Matrix([[1,2], [3,4]])
         let res = x.sum()
         XCTAssertEqual(res, Float(10.0))
@@ -92,7 +92,7 @@ class MatrixTests: XCTestCase {
     // MARK: - Matrix Exp Tests
     
     func testMatrixExpCPU() {
-        MLSetComputeMode(.CPU)
+        MLSetComputeMode(.cpu)
         let x = Matrix([[1,2], [3,4]])
         let res = x.exp()
         
@@ -102,7 +102,7 @@ class MatrixTests: XCTestCase {
     }
     
     func testMatrixExpGPU() {
-        MLSetComputeMode(.GPU)
+        MLSetComputeMode(.gpu)
         let x = Matrix([[1,2], [3,4]])
         let res = x.exp()
         

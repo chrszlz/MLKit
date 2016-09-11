@@ -19,7 +19,7 @@ public struct Softmax: MLBlock {
     }
     
     /// Applies the softmax function to `input`.
-    public func apply(input: Matrix) -> Matrix {
+    public func apply(_ input: Matrix) -> Matrix {
         let res = input.exp()
         let sum = res.sum()
         

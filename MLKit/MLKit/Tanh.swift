@@ -19,12 +19,12 @@ public struct Tanh: Activation {
     }
     
     /// Applies the Tanh function to `input`.
-    public func apply(input: Matrix) -> Matrix {
+    public func apply(_ input: Matrix) -> Matrix {
         return MLComputeOptions.computeDevice.applyTanh(input)
     }
     
     /// Applies the derivative of the Tanh function to `input`.
-    public func applyDerivative(input: Matrix) -> Matrix {
+    public func applyDerivative(_ input: Matrix) -> Matrix {
         return MLComputeOptions.computeDevice.applyTanhDerivative(input)
     }
 }

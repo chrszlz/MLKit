@@ -15,25 +15,25 @@ class GPU: MLComputeDevice {
     
     /// A closure that takes a `MTLComputeCommandEncoder` and outputs a `MTLBuffer`
     /// and a `Shape`. See applyMatrixShader(...) for more details.
-    typealias ComputeInputs = (MTLComputeCommandEncoder -> (MTLBuffer, Shape))
+    typealias ComputeInputs = ((MTLComputeCommandEncoder) -> (MTLBuffer, Shape))
     
     /// The shared instance used to get access to the GPU.
     static let deviceGPU = GPU()
     
     /// The abstraction for the GPU.
-    private let device: MTLDevice
+    fileprivate let device: MTLDevice
     
     /// A collection of all the shaders in MLKit.
-    private let library: MTLLibrary
+    fileprivate let library: MTLLibrary
     
     /// The queue that contains all the commands that need to be executed on
     /// the GPU.
-    private let commandQueue: MTLCommandQueue
+    fileprivate let commandQueue: MTLCommandQueue
     
     
     // MARK: - Initializers
     
-    private init() {
+    fileprivate init() {
         guard let device = MTLCreateSystemDefaultDevice() else {
             fatalError("Unable to create MTLDevice.")
         }
@@ -44,38 +44,38 @@ class GPU: MLComputeDevice {
         // bundle structure and store their resources under 
         // /Versions/<Current Version>/Resources so grab the path to it and load
         // from there.
-        let bundle = NSBundle(forClass: GPU.self)
-        guard let libraryURL = bundle.URLForResource("default", withExtension: "metallib", subdirectory: "Versions/A/Resources"),
-              let libraryPath = libraryURL.path else {
+        let bundle = Bundle(for: GPU.self)
+        guard let libraryURL = bundle.url(forResource: "default", withExtension: "metallib", subdirectory: "Versions/A/Resources")
+        else {
             fatalError("Unable to find default metallib")
         }
         
-        guard let library = try? device.newLibraryWithFile(libraryPath) else {
+        guard let library = try? device.makeLibrary(filepath: libraryURL.path) else {
             fatalError("Unable to create MTLLibrary.")
         }
         
         self.device = device
         self.library = library
-        self.commandQueue = device.newCommandQueue()
+        self.commandQueue = device.makeCommandQueue()
     }
 
     
     // MARK: - Matrix Operations
     
     /// Returns `a` + `b`.
-    func addMatrices(a a: Matrix, b: Matrix) -> Matrix {
+    func addMatrices(a: Matrix, b: Matrix) -> Matrix {
         let result = applyMatrixShader("matrix_add") { (commandEncoder: MTLComputeCommandEncoder) -> (MTLBuffer, Shape) in
             // Load the data into MTLBuffers the shader can access.
             let inputA = a.elements
             let inputB = b.elements
-            let output = [Float](count: a.rows * b.columns, repeatedValue: 0.0)
+            let output = [Float](repeating: 0.0, count: a.rows * b.columns)
             
             let inputBufferA = self.device.newBufferWithContents(inputA)
             let inputBufferB = self.device.newBufferWithContents(inputB)
             let outputBuffer = self.device.newBufferWithContents(output)
-            commandEncoder.setBuffer(inputBufferA, offset: 0, atIndex: 0)
-            commandEncoder.setBuffer(inputBufferB, offset: 0, atIndex: 1)
-            commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 2)
+            commandEncoder.setBuffer(inputBufferA, offset: 0, at: 0)
+            commandEncoder.setBuffer(inputBufferB, offset: 0, at: 1)
+            commandEncoder.setBuffer(outputBuffer, offset: 0, at: 2)
             
             return (outputBuffer, a.shape)
         }
@@ -84,19 +84,19 @@ class GPU: MLComputeDevice {
     }
     
     /// Returns `a` - `b`.
-    func subtractMatrices(a a: Matrix, b: Matrix) -> Matrix {        
+    func subtractMatrices(a: Matrix, b: Matrix) -> Matrix {        
         let result = applyMatrixShader("matrix_subtract") { (commandEncoder: MTLComputeCommandEncoder) -> (MTLBuffer, Shape) in
             // Load the data into MTLBuffers the shader can access.
             let inputA = a.elements
             let inputB = b.elements
-            let output = [Float](count: a.rows * b.columns, repeatedValue: 0.0)
+            let output = [Float](repeating: 0.0, count: a.rows * b.columns)
             
             let inputBufferA = self.device.newBufferWithContents(inputA)
             let inputBufferB = self.device.newBufferWithContents(inputB)
             let outputBuffer = self.device.newBufferWithContents(output)
-            commandEncoder.setBuffer(inputBufferA, offset: 0, atIndex: 0)
-            commandEncoder.setBuffer(inputBufferB, offset: 0, atIndex: 1)
-            commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 2)
+            commandEncoder.setBuffer(inputBufferA, offset: 0, at: 0)
+            commandEncoder.setBuffer(inputBufferB, offset: 0, at: 1)
+            commandEncoder.setBuffer(outputBuffer, offset: 0, at: 2)
             
             return (outputBuffer, a.shape)
         }
@@ -105,23 +105,23 @@ class GPU: MLComputeDevice {
     }
     
     /// Returns `a` * `b`.
-    func multiplyMatrices(a a: Matrix, b: Matrix) -> Matrix {
+    func multiplyMatrices(a: Matrix, b: Matrix) -> Matrix {
         return a
     }
     
     /// Multiplies each element in `a` by `c`.
-    func scaleMatrix(a: Matrix, by c: Float) ->  Matrix {
+    func scaleMatrix(_ a: Matrix, by c: Float) ->  Matrix {
         let result = applyMatrixShader("matrix_scale") { (commandEncoder: MTLComputeCommandEncoder) -> (MTLBuffer, Shape) in
             // Load the data into MTLBuffers the shader can access.
             var scalingFactor = c
             let input = a.elements
-            let output = [Float](count: a.elements.count, repeatedValue: 0.0)
+            let output = [Float](repeating: 0.0, count: a.elements.count)
             
             let inputBuffer = self.device.newBufferWithContents(input)
             let outputBuffer = self.device.newBufferWithContents(output)
-            commandEncoder.setBytes(&scalingFactor, length: sizeof(Float), atIndex: 0)
-            commandEncoder.setBuffer(inputBuffer, offset: 0, atIndex: 1)
-            commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 2)
+            commandEncoder.setBytes(&scalingFactor, length: MemoryLayout<Float>.size, at: 0)
+            commandEncoder.setBuffer(inputBuffer, offset: 0, at: 1)
+            commandEncoder.setBuffer(outputBuffer, offset: 0, at: 2)
             
             return (outputBuffer, a.shape)
         }
@@ -130,16 +130,16 @@ class GPU: MLComputeDevice {
     }
     
     /// Returns the sum of the elements in `a`.
-    func sumMatrix(a: Matrix) -> Float {
+    func sumMatrix(_ a: Matrix) -> Float {
         // TODO: Fix this
         let result = applyMatrixShader("matrix_sum") { (commandEncoder: MTLComputeCommandEncoder) -> (MTLBuffer, Shape) in
             let input = a.elements
-            let output = [Float](count: 1, repeatedValue: 0)
+            let output = [Float](repeating: 0, count: 1)
             
             let inputBuffer = self.device.newBufferWithContents(input)
             let outputBuffer = self.device.newBufferWithContents(output)
-            commandEncoder.setBuffer(inputBuffer, offset: 0, atIndex: 0)
-            commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 1)
+            commandEncoder.setBuffer(inputBuffer, offset: 0, at: 0)
+            commandEncoder.setBuffer(outputBuffer, offset: 0, at: 1)
             
             return (outputBuffer, Shape(1, 1))
         }
@@ -148,15 +148,15 @@ class GPU: MLComputeDevice {
     }
     
     /// Exponentiates each element in `a`.
-    func expMatrix(a: Matrix) -> Matrix {
+    func expMatrix(_ a: Matrix) -> Matrix {
         let result = applyMatrixShader("matrix_exp") { (commandEncoder: MTLComputeCommandEncoder) -> (MTLBuffer, Shape) in
             let input = a.elements
-            let output = [Float](count: a.elements.count, repeatedValue: 0)
+            let output = [Float](repeating: 0, count: a.elements.count)
             
             let inputBuffer = self.device.newBufferWithContents(input)
             let outputBuffer = self.device.newBufferWithContents(output)
-            commandEncoder.setBuffer(inputBuffer, offset: 0, atIndex: 0)
-            commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 1)
+            commandEncoder.setBuffer(inputBuffer, offset: 0, at: 0)
+            commandEncoder.setBuffer(outputBuffer, offset: 0, at: 1)
             
             return (outputBuffer, a.shape)
         }
@@ -167,15 +167,15 @@ class GPU: MLComputeDevice {
     // MARK: - Activation Functions
     
     /// Applies the sigmoid function to each element in `a`.
-    func applySigmoid(a: Matrix) -> Matrix {
+    func applySigmoid(_ a: Matrix) -> Matrix {
         let result = applyMatrixShader("activation_sigmoid") { (commandEncoder: MTLComputeCommandEncoder) -> (MTLBuffer, Shape) in
             let input = a.elements
-            let output = [Float](count: a.elements.count, repeatedValue: 0.0)
+            let output = [Float](repeating: 0.0, count: a.elements.count)
             
             let inputBuffer = self.device.newBufferWithContents(input)
             let outputBuffer = self.device.newBufferWithContents(output)
-            commandEncoder.setBuffer(inputBuffer, offset: 0, atIndex: 0)
-            commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 1)
+            commandEncoder.setBuffer(inputBuffer, offset: 0, at: 0)
+            commandEncoder.setBuffer(outputBuffer, offset: 0, at: 1)
             
             return (outputBuffer, a.shape)
         }
@@ -184,15 +184,15 @@ class GPU: MLComputeDevice {
     }
     
     /// Applies the derivative of the sigmoid function to each element in `a`.
-    func applySigmoidDerivative(a: Matrix) -> Matrix {
+    func applySigmoidDerivative(_ a: Matrix) -> Matrix {
         let result = applyMatrixShader("activation_sigmoid_derivative") { (commandEncoder: MTLComputeCommandEncoder) -> (MTLBuffer, Shape) in
             let input = a.elements
-            let output = [Float](count: a.elements.count, repeatedValue: 0.0)
+            let output = [Float](repeating: 0.0, count: a.elements.count)
             
             let inputBuffer = self.device.newBufferWithContents(input)
             let outputBuffer = self.device.newBufferWithContents(output)
-            commandEncoder.setBuffer(inputBuffer, offset: 0, atIndex: 0)
-            commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 1)
+            commandEncoder.setBuffer(inputBuffer, offset: 0, at: 0)
+            commandEncoder.setBuffer(outputBuffer, offset: 0, at: 1)
             
             return (outputBuffer, a.shape)
         }
@@ -201,15 +201,15 @@ class GPU: MLComputeDevice {
     }
     
     /// Applies the hyperbolic tangent to each element in `a`.
-    func applyTanh(a: Matrix) -> Matrix {
+    func applyTanh(_ a: Matrix) -> Matrix {
         let result = applyMatrixShader("activation_tanh") { (commandEncoder: MTLComputeCommandEncoder) -> (MTLBuffer, Shape) in
             let input = a.elements
-            let output = [Float](count: a.elements.count, repeatedValue: 0.0)
+            let output = [Float](repeating: 0.0, count: a.elements.count)
             
             let inputBuffer = self.device.newBufferWithContents(input)
             let outputBuffer = self.device.newBufferWithContents(output)
-            commandEncoder.setBuffer(inputBuffer, offset: 0, atIndex: 0)
-            commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 1)
+            commandEncoder.setBuffer(inputBuffer, offset: 0, at: 0)
+            commandEncoder.setBuffer(outputBuffer, offset: 0, at: 1)
             
             return (outputBuffer, a.shape)
         }
@@ -218,15 +218,15 @@ class GPU: MLComputeDevice {
     }
     
     /// Applies the derivative of the hyperbolic tangent to each element in `a`.
-    func applyTanhDerivative(a: Matrix) -> Matrix {
+    func applyTanhDerivative(_ a: Matrix) -> Matrix {
         let result = applyMatrixShader("activation_tanh_derivative") { (commandEncoder: MTLComputeCommandEncoder) -> (MTLBuffer, Shape) in
             let input = a.elements
-            let output = [Float](count: a.elements.count, repeatedValue: 0.0)
+            let output = [Float](repeating: 0.0, count: a.elements.count)
             
             let inputBuffer = self.device.newBufferWithContents(input)
             let outputBuffer = self.device.newBufferWithContents(output)
-            commandEncoder.setBuffer(inputBuffer, offset: 0, atIndex: 0)
-            commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 1)
+            commandEncoder.setBuffer(inputBuffer, offset: 0, at: 0)
+            commandEncoder.setBuffer(outputBuffer, offset: 0, at: 1)
             
             return (outputBuffer, a.shape)
         }
@@ -235,15 +235,15 @@ class GPU: MLComputeDevice {
     }
     
     /// Applies the rectified linear activation function to each element in `a`.
-    func applyRelu(a: Matrix) -> Matrix {
+    func applyRelu(_ a: Matrix) -> Matrix {
         let result = applyMatrixShader("activation_relu") { (commandEncoder: MTLComputeCommandEncoder) -> (MTLBuffer, Shape) in
             let input = a.elements
-            let output = [Float](count: a.elements.count, repeatedValue: 0.0)
+            let output = [Float](repeating: 0.0, count: a.elements.count)
             
             let inputBuffer = self.device.newBufferWithContents(input)
             let outputBuffer = self.device.newBufferWithContents(output)
-            commandEncoder.setBuffer(inputBuffer, offset: 0, atIndex: 0)
-            commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 1)
+            commandEncoder.setBuffer(inputBuffer, offset: 0, at: 0)
+            commandEncoder.setBuffer(outputBuffer, offset: 0, at: 1)
             
             return (outputBuffer, a.shape)
         }
@@ -252,15 +252,15 @@ class GPU: MLComputeDevice {
     }
     
     /// Applies the Rectified Linear activation derivative to each element in `a`.
-    func applyReluDerivative(a: Matrix) -> Matrix {
+    func applyReluDerivative(_ a: Matrix) -> Matrix {
         let result = applyMatrixShader("activation_relu_derivative") { (commandEncoder: MTLComputeCommandEncoder) -> (MTLBuffer, Shape) in
             let input = a.elements
-            let output = [Float](count: a.elements.count, repeatedValue: 0.0)
+            let output = [Float](repeating: 0.0, count: a.elements.count)
             
             let inputBuffer = self.device.newBufferWithContents(input)
             let outputBuffer = self.device.newBufferWithContents(output)
-            commandEncoder.setBuffer(inputBuffer, offset: 0, atIndex: 0)
-            commandEncoder.setBuffer(outputBuffer, offset: 0, atIndex: 1)
+            commandEncoder.setBuffer(inputBuffer, offset: 0, at: 0)
+            commandEncoder.setBuffer(outputBuffer, offset: 0, at: 1)
             
             return (outputBuffer, a.shape)
         }
@@ -275,12 +275,12 @@ class GPU: MLComputeDevice {
     /// - parameter shader: The name of the compute shader to load.
     ///
     /// - returns: The `MTLComputePipelineState` associated with `shader`.
-    private func loadComputeShader(shader: String) -> MTLComputePipelineState {
-        guard let scalingFunction = library.newFunctionWithName(shader) else {
+    fileprivate func loadComputeShader(_ shader: String) -> MTLComputePipelineState {
+        guard let scalingFunction = library.makeFunction(name: shader) else {
             fatalError("No shader named \(shader).")
         }
         
-        guard let pipeline = try? device.newComputePipelineStateWithFunction(scalingFunction) else {
+        guard let pipeline = try? device.makeComputePipelineState(function: scalingFunction) else {
             fatalError("Could not create compute pipeline with the \(shader) shader.")
         }
         
@@ -294,11 +294,11 @@ class GPU: MLComputeDevice {
     /// - parameter computeInputs: Use computeInputs to configure the commandEncoder, set the buffers,
     ///                            and return a reference to the buffer containing the output of the shader, 
     ///                            and the shape the final result matrix.
-    private func applyMatrixShader(shader: String, with computeInputs: ComputeInputs) -> Matrix {
+    fileprivate func applyMatrixShader(_ shader: String, with computeInputs: ComputeInputs) -> Matrix {
         // Get the shader and configure the command encoder.
         let pipeline = loadComputeShader(shader)
-        let commandBuffer = commandQueue.commandBuffer()
-        let commandEncoder = commandBuffer.computeCommandEncoder()
+        let commandBuffer = commandQueue.makeCommandBuffer()
+        let commandEncoder = commandBuffer.makeComputeCommandEncoder()
         commandEncoder.setComputePipelineState(pipeline)
         
         // Update command encoder with inputs and determine output shape.
@@ -317,10 +317,10 @@ class GPU: MLComputeDevice {
         
         // Grab the data from the from the MTLBuffer and return the new scaled
         // matrix.
-        let size = outputShape.count * sizeof(Float)
-        let data = NSData(bytesNoCopy: outputBuffer.contents(), length: size, freeWhenDone: false)
-        var result = [Float](count: outputShape.count, repeatedValue: 0.0)
-        data.getBytes(&result, length: size)
+        let size = outputShape.count * MemoryLayout<Float>.size
+        let data = Data(bytesNoCopy: outputBuffer.contents(), count: size, deallocator: .none)
+        var result = [Float](repeating: 0.0, count: outputShape.count)
+        (data as NSData).getBytes(&result, length: size)
         
         return Matrix(rows: outputShape.rows, columns: outputShape.columns, elements: result)
     }
@@ -332,8 +332,8 @@ class GPU: MLComputeDevice {
 extension MTLDevice {
     
     /// Creates a new `MTLBuffer` with the specified contents.
-    func newBufferWithContents(contents: [Float]) -> MTLBuffer {
-        let size = contents.count * sizeof(Float)
-        return newBufferWithBytes(contents, length: size, options: .StorageModePrivate)
+    func newBufferWithContents(_ contents: [Float]) -> MTLBuffer {
+        let size = contents.count * MemoryLayout<Float>.size
+        return makeBuffer(bytes: contents, length: size, options: .storageModePrivate)
     }
 }

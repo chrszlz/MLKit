@@ -13,10 +13,10 @@ import Accelerate
 public enum InitializationPolicy {
     
     /// Randomly initialize each element with number between min and max.
-    case Random(min: Float, max: Float)
+    case random(min: Float, max: Float)
     
     /// Initialize the matrix using Xavier initialization.
-    case Xavier
+    case xavier
 }
 
 public struct Matrix: Equatable {
@@ -33,6 +33,11 @@ public struct Matrix: Equatable {
     /// The transpose of this matrix.
     public var T: Matrix {
         return self.transpose()
+    }
+    
+    /// Whether or not the matrix is square
+    public var square: Bool {
+        return self.rows == self.columns
     }
     
     /// Returns the element in the matrix at row `row` and column `column`.
@@ -56,6 +61,19 @@ public struct Matrix: Equatable {
 
     // MARK: - Initializers
     
+    /// The designated initializer. Creates a `rows` by `columns` matrix with
+    /// `elements`.
+    init(rows: Int, columns: Int, elements: [Float]) {
+        guard rows > 0 && columns > 0 else {
+            fatalError("Invalid dimensions. Matrix must be at least 1x1.")
+        }
+        
+        self.rows = rows
+        self.columns = columns
+        self.elements = elements
+        self.shape = Shape(rows, columns)
+    }
+    
     /// Initializes a `rows` by `columns` matrix using the specified `policy`.
     ///
     /// - parameter rows: The number of rows in the matrix.
@@ -67,12 +85,12 @@ public struct Matrix: Equatable {
         let columns = columns
         let count = rows * columns
         
-        var elements = [Float](count: count, repeatedValue: 0.0)
+        var elements = [Float](repeating: 0.0, count: count)
         for i in 0..<count {
             switch policy {
-            case .Random(let min, let max):
+            case .random(let min, let max):
                 elements[i] = Float.random(min, max)
-            case .Xavier:
+            case .xavier:
                 elements[i] = Float.random()/sqrt(Float(columns))
             }
         }
@@ -104,15 +122,15 @@ public struct Matrix: Equatable {
     ///
     /// - parameter rows: The number of rows in the matrix.
     /// - parameter: columns: The number of columns in the matrix.
-    public static func zeros(rows rows: Int, columns: Int) -> Matrix {
-        let elements = [Float](count: rows * columns, repeatedValue: 0)
+    public static func zeros(rows: Int, columns: Int) -> Matrix {
+        let elements = [Float](repeating: 0, count: rows * columns)
         return Matrix(rows: rows, columns: columns, elements: elements)
     }
     
     /// Returns a `rows` by `columns` matrix of zeros.
     ///
     /// - parameter shape: The number of rows and columns in the matrix.
-    public static func zeros(shape: Shape) -> Matrix {
+    public static func zeros(_ shape: Shape) -> Matrix {
         return self.zeros(rows: shape.rows, columns: shape.columns)
     }
     
@@ -120,31 +138,17 @@ public struct Matrix: Equatable {
     ///
     /// - parameter rows: The number of rows in the matrix.
     /// - parameter columns: The number of columns in the matrix.
-    public static func ones(rows rows: Int, columns: Int) -> Matrix {
-        let elements = [Float](count: rows * columns, repeatedValue: 1)
+    public static func ones(rows: Int, columns: Int) -> Matrix {
+        let elements = [Float](repeating: 1, count: rows * columns)
         return Matrix(rows: rows, columns: columns, elements: elements)
     }
     
     /// Returns a `rows` by `columns` matrix of ones.
     ///
     /// - parameter shape: The number of rows and columns in the matrix.
-    public static func ones(shape: Shape) -> Matrix {
+    public static func ones(_ shape: Shape) -> Matrix {
         return self.ones(rows: shape.rows, columns: shape.columns)
     }
-    
-    /// The designated initializer. Creates a `rows` by `columns` matrix with
-    /// `elements`.
-    init(rows: Int, columns: Int, elements: [Float]) {
-        guard rows > 0 && columns > 0 else {
-            fatalError("Invalid dimensions. Matrix must be at least 1x1.")
-        }
-        
-        self.rows = rows
-        self.columns = columns
-        self.elements = elements
-        self.shape = Shape(rows, columns)
-    }
-    
     
     // MARK: - Operations
     
@@ -154,19 +158,25 @@ public struct Matrix: Equatable {
         return CPU().sumMatrix(self)
     }
     
+    /// Returns the sum of all the elements in this matrix.
+    public func asum() -> Float {
+        // TODO: Change this to MLComputeDevice once implemented in GPU.
+        return CPU().absSumMatrix(self)
+    }
+    
     public func exp() -> Matrix {
         return MLComputeOptions.computeDevice.expMatrix(self)
     }
     
     /// Returns the transpose of this matrix.
-    private func transpose() -> Matrix {
+    public func transpose() -> Matrix {
         var res = Matrix.zeros(rows: self.columns, columns: self.rows)
         vDSP_mtrans(self.elements, 1, &(res.elements), 1, vDSP_Length(res.rows), vDSP_Length(res.columns))
         return res
     }
     
     /// Returns the sum of the two matrices (a + b).
-    private static func add(a: Matrix, b: Matrix) -> Matrix {
+    fileprivate static func add(_ a: Matrix,_ b: Matrix) -> Matrix {
         guard (a.shape == b.shape) else {
             fatalError("Shape of a(\(a.shape) must be equal to shape of b(\(b.shape) for addition.")
         }
@@ -175,7 +185,7 @@ public struct Matrix: Equatable {
     }
     
     /// Returns the difference of the two matrices (a - b).
-    private static func subtract(a: Matrix, b: Matrix) -> Matrix {
+    fileprivate static func subtract(_ a: Matrix,_ b: Matrix) -> Matrix {
         guard (a.shape == b.shape) else {
             fatalError("Shape of a(\(a.shape) must be equal to shape of b(\(b.shape) for subtraction.")
         }
@@ -184,7 +194,7 @@ public struct Matrix: Equatable {
     }
     
     /// Returns the product of two matrices (a * b).
-    private static func multiply(a: Matrix, b: Matrix) -> Matrix {
+    fileprivate static func multiply(_ a: Matrix,_ b: Matrix) -> Matrix {
         guard (a.columns == b.rows) else {
             fatalError("Number of columns in a(\(a.columns) must be equal to number of rows in b(\(b.rows) for multiplication.")
         }
@@ -193,33 +203,55 @@ public struct Matrix: Equatable {
     }
     
     /// Returns a `Matrix` where each element in `a` is multiplied by `s`.
-    private static func scale(s: Float, a: Matrix) -> Matrix {
+    fileprivate static func scale(_ s: Float,_ a: Matrix) -> Matrix {
         return MLComputeOptions.computeDevice.scaleMatrix(a, by: s)
+    }
+    
+    /// Returns the quotient of (a ÷ b).
+    fileprivate static func divide(_ a: Matrix,_ b: Matrix) -> Matrix {
+        // TODO: Change this to MLComputeDevice once implemented in GPU.
+        return CPU().divideMatricies(a: a, b: b)
+    }
+    
+    /// Returns the modulo of (a % b).
+    fileprivate static func modulo(_ a: Matrix,_ b: Matrix) -> Matrix {
+        return CPU().moduloMatricies(a: a, b: b)
     }
 }
 
 // MARK: - Operators
 
 public func + (lhs: Matrix, rhs: Matrix) -> Matrix {
-    return Matrix.add(lhs, b: rhs)
+    return Matrix.add(lhs, rhs)
 }
 
 public func - (lhs: Matrix, rhs: Matrix) -> Matrix {
-    return Matrix.subtract(lhs, b: rhs)
+    return Matrix.subtract(lhs, rhs)
 }
 
 public func * (lhs: Matrix, rhs: Matrix) -> Matrix {
-    return Matrix.multiply(lhs, b: rhs)
+    return Matrix.multiply(lhs, rhs)
 }
 
 public func * (lhs: Float, rhs: Matrix) -> Matrix {
-    return Matrix.scale(lhs, a: rhs)
+    return Matrix.scale(lhs, rhs)
 }
 
 public func * (lhs: Matrix, rhs: Float) -> Matrix {
-    return Matrix.scale(rhs, a: lhs)
+    return Matrix.scale(rhs, lhs)
 }
 
+public func / (lhs: Matrix, rhs: Matrix) -> Matrix {
+    return Matrix.divide(lhs, rhs)
+}
+
+public func / (lhs: Matrix, rhs: Float) -> Matrix {
+    return Matrix.scale(1.0/rhs, lhs)
+}
+
+public func % (lhs: Matrix, rhs: Matrix) -> Matrix {
+    return Matrix.modulo(lhs, rhs)
+}
 
 // MARK: - Equatable
 
@@ -230,28 +262,34 @@ public func == (lhs: Matrix, rhs: Matrix) -> Bool {
 
 // MARK: - ArrayLiteralConvertible
 
-extension Matrix: ArrayLiteralConvertible {
+extension Matrix: ExpressibleByArrayLiteral {
     public init(arrayLiteral elements: [Float]...) {
         self = Matrix(elements)
     }
 }
 
+// MARK: - Utility
+public func diagnose(file: String = #file, line: Int = #line) -> Bool {
+    print("Issue \(file):\(line)")
+    return true
+}
 
-// MARK: - CustomStringConvertible
+
+// MARK: - Matrix printing - CustomStringConvertible
 
 extension Matrix: CustomStringConvertible {
     public var description: String {
-        var output = "\t\(self.rows)x\(self.columns) : \(self.elements[0].dynamicType) : \(MLComputeOptions.computeMode)\n\n"
+        var output = "\t\(self.rows)x\(self.columns) : \(type(of: self.elements[0])) : \(MLComputeOptions.computeMode)\n\n"
  
         // Calculates how many indices to print within each axis.
-        func determineAxisIndices(axisLength axisLength: Int, axisLimit: Int) -> [Int] {
+        func determineAxisIndices(axisLength: Int, axisLimit: Int) -> [Int] {
             guard (axisLength > 2*axisLimit) else {
                 return [Int](0..<axisLength)
             }
             
             var indices = [Int] ( 0..<axisLimit ) // Beginning indices
             indices += [Int] ( (axisLength-1)-(axisLimit-1)..<axisLength ) // End indices
-            indices.insert(-1, atIndex: axisLimit) // Inserts -1 to mark ...
+            indices.insert(-1, at: axisLimit) // Inserts -1 to mark ...
             
             return indices
         }
@@ -288,7 +326,7 @@ extension Float {
     
     /// Returns a float between `min` and `max`. If no arguments are passed in,
     /// `min` defaults to 0 and `max` defaults to 100.
-    public static func random(min: Float = 0, _ max: Float = 100) -> Float {
+    public static func random(_ min: Float = 0, _ max: Float = 100) -> Float {
         return (Float(arc4random()) / 0xFFFFFFFF) * (max - min) + min
     }
 }

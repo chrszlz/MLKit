@@ -7,7 +7,7 @@ import MLKit
 let m: Matrix = [[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]]
 
 // CPU Mode
-MLSetComputeMode(.CPU)
+MLSetComputeMode(.cpu)
 
 let addCPU  = m + m
 print(addCPU)
@@ -16,11 +16,11 @@ print(subCPU)
 let multCPU = m * 3
 print(multCPU)
 print(m)
-let vecMultCPU = m * m
-print(vecMultCPU)
+//let vecMultCPU = m * m
+//print(vecMultCPU)
 
 // GPU Mode
-MLSetComputeMode(.GPU)
+MLSetComputeMode(.gpu)
 
 let addGPU  = m + m
 print(addGPU)

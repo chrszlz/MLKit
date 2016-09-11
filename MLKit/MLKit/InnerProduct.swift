@@ -34,7 +34,7 @@ public struct InnerProduct: Layer {
     }
     
     /// Returns the weights * input + bias
-    public func apply(input: Matrix) -> Matrix {
+    public func apply(_ input: Matrix) -> Matrix {
         return (weights * input) + bias
     }
 }

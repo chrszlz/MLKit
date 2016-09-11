@@ -16,7 +16,11 @@ class CPU: MLComputeDevice {
     // MARK: - Matrix Operations
     
     /// Returns `a` + `b`.
-    func addMatrices(a a: Matrix, b: Matrix) -> Matrix {
+    func addMatrices(a: Matrix, b: Matrix) -> Matrix {
+        guard a.shape == b.shape else {
+            fatalError("Matrix Addition: matricies must have same shape")
+        }
+        
         var res = b        
         vDSP_vadd(a.elements, 1, b.elements, 1, &res.elements, 1, vDSP_Length(res.elements.count))
  
@@ -24,7 +28,11 @@ class CPU: MLComputeDevice {
     }
     
     /// Returns `a` - `b`.
-    func subtractMatrices(a a: Matrix, b: Matrix) -> Matrix {
+    func subtractMatrices(a: Matrix, b: Matrix) -> Matrix {
+        guard a.shape == b.shape else {
+            fatalError("Matrix Subtraction: matricies must have same shape")
+        }
+        
         let negative_b = scaleMatrix(b, by: -1.0)
         let res = addMatrices(a: a, b: negative_b)
 
@@ -32,7 +40,8 @@ class CPU: MLComputeDevice {
     }
     
     /// Multiplies each element in `a` by `c`.
-    func scaleMatrix(var a: Matrix, var by c: Float) -> Matrix {
+    func scaleMatrix(_ a: Matrix, by c: Float) -> Matrix {
+        var a = a, c = c
         vDSP_vsmul(a.elements, 1, &c, &a.elements, 1, vDSP_Length(a.elements.count))
         
         return a
@@ -40,25 +49,58 @@ class CPU: MLComputeDevice {
     
     
     /// Returns `a` * `b`.
-    func multiplyMatrices(a a: Matrix, b: Matrix) -> Matrix {
+    func multiplyMatrices(a: Matrix, b: Matrix) -> Matrix {
+        guard a.columns == b.rows else {
+            fatalError("Matrix Multiplication: shapes must align")
+        }
+        
         var res = Matrix.zeros(rows: a.rows, columns: b.columns)
         cblas_sgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, Int32(a.rows), Int32(b.columns), Int32(a.columns), 1.0, a.elements, Int32(a.columns), b.elements, Int32(b.columns), 0.0, &res.elements, Int32(res.columns))
         
         return res
     }
     
+    /// Returns `a` ÷ `b`.
+    func divideMatricies(a: Matrix, b: Matrix) -> Matrix {
+        guard b.square else {
+            fatalError("Matrix `Division`: shapes must align")
+        }
+        var res = Matrix.zeros(a.shape)
+        vvdivf(&res.elements, a.elements, b.elements, [Int32(a.shape.count)])
+        
+        return res
+    }
+    
+    /// Returns `a` % `b`.
+    func moduloMatricies(a: Matrix, b: Matrix) -> Matrix {
+        guard a.shape == b.shape else {
+            fatalError("Matrix Subtraction: matricies must have same shape")
+        }
+        
+        var res = Matrix.zeros(a.shape)
+        vvfmodf(&res.elements, a.elements, b.elements, [Int32(a.shape.count)])
+        
+        return res
+    }
+    
     /// Returns the sum of the elements in `a`.
-    func sumMatrix(a: Matrix) -> Float {
+    func sumMatrix(_ a: Matrix) -> Float {
         var res: Float = 0
         vDSP_sve(a.elements, 1, &res, vDSP_Length(a.elements.count))
         
         return res
     }
     
+    /// Returns the absolute sum of the elements in `a`.
+    func absSumMatrix(_ a: Matrix) -> Float {
+        return cblas_sasum(Int32(a.shape.count), a.elements, 1)
+    }
+    
     /// Exponentiates each element in `a`.
-    func expMatrix(a: Matrix) -> Matrix {
+    func expMatrix(_ a: Matrix) -> Matrix {
         var output = a
         vvexpf(&output.elements, a.elements, [Int32(a.elements.count)])
+        
         return output
     }
     
@@ -66,7 +108,7 @@ class CPU: MLComputeDevice {
     // MARK: - Activation Functions
     
     /// Applies the sigmoid function to each element in `a`.
-    func applySigmoid(a: Matrix) -> Matrix {
+    func applySigmoid(_ a: Matrix) -> Matrix {
         var output = Matrix.zeros(a.shape)
         let count = Int32(output.elements.count)
         var one: Float = 1.0
@@ -79,7 +121,7 @@ class CPU: MLComputeDevice {
     }
     
     /// Applies the derivative of the sigmoid function to each element in `a`.
-    func applySigmoidDerivative(a: Matrix) -> Matrix {
+    func applySigmoidDerivative(_ a: Matrix) -> Matrix {
         let sigmoid = applySigmoid(a)
         var oneMinusSigmoid = sigmoid
         var one: Float = 1.0
@@ -94,7 +136,7 @@ class CPU: MLComputeDevice {
     }
     
     /// Applies the hyperbolic tangent to each element in `a`.
-    func applyTanh(a: Matrix) -> Matrix {
+    func applyTanh(_ a: Matrix) -> Matrix {
         var res = a
         vvtanhf(&res.elements, a.elements, [Int32(a.elements.count)])
         
@@ -102,11 +144,11 @@ class CPU: MLComputeDevice {
     }
     
     /// Applies the derivative of the hyperbolic tangent to each element in `a`.
-    func applyTanhDerivative(a: Matrix) -> Matrix {
+    func applyTanhDerivative(_ a: Matrix) -> Matrix {
         var output = applyTanh(a)
         let count = output.elements.count
         var one: Float = 1.0
-        var twos = [Float](count: count, repeatedValue: 2)
+        var twos = [Float](repeating: 2, count: count)
         vvpowf(&output.elements, &twos, output.elements, [Int32(count)])
         vDSP_vneg(output.elements, 1, &output.elements, 1, vDSP_Length(count))
         vDSP_vsadd(output.elements, 1, &one, &output.elements, 1, vDSP_Length(count))
@@ -115,7 +157,7 @@ class CPU: MLComputeDevice {
     }
     
     /// Applies the rectified linear activation function to each element in `a`.
-    func applyRelu(a: Matrix) -> Matrix {
+    func applyRelu(_ a: Matrix) -> Matrix {
         var res = a
         var zero: Float = 0.0
         vDSP_vthres(a.elements, 1, &zero, &res.elements, 1, vDSP_Length(res.elements.count))
@@ -124,7 +166,7 @@ class CPU: MLComputeDevice {
     }
     
     /// Applies the Rectified Linear activation derivative to each element in `a`.
-    func applyReluDerivative(a: Matrix) -> Matrix {
+    func applyReluDerivative(_ a: Matrix) -> Matrix {
         var output = a
         for i in 0..<a.elements.count {
             output.elements[i] = (a.elements[i] == 0) ? 0 : 1

@@ -12,5 +12,5 @@ import Foundation
 public protocol Activation: MLBlock {
     
     /// Applies the derivative of the activation function to `input`.
-    func applyDerivative(input: Matrix) -> Matrix
+    func applyDerivative(_ input: Matrix) -> Matrix
 }

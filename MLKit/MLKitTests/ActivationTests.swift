@@ -14,7 +14,7 @@ class ActivationTests: XCTestCase {
     // MARK: - Sigmoid Tests
     
     func testSigmoidCPU() {
-        MLSetComputeMode(.CPU)
+        MLSetComputeMode(.cpu)
         let sigmoid = Sigmoid(name: "sig1")
         let m: Matrix = [[0,1], [2,3]]
         let res = sigmoid.apply(m)
@@ -27,7 +27,7 @@ class ActivationTests: XCTestCase {
     }
     
     func testSigmoidGPU() {
-        MLSetComputeMode(.GPU)
+        MLSetComputeMode(.gpu)
         let sigmoid = Sigmoid(name: "sig1")
         let m: Matrix = [[0,1], [2,3]]
         let res = sigmoid.apply(m)
@@ -40,7 +40,7 @@ class ActivationTests: XCTestCase {
     }
     
     func testSigmoidDerivativeCPU() {
-        MLSetComputeMode(.CPU)
+        MLSetComputeMode(.cpu)
         let sigmoid = Sigmoid(name: "sig1")
         let m: Matrix = [[0,1], [2,3]]
         let res = sigmoid.applyDerivative(m)
@@ -54,7 +54,7 @@ class ActivationTests: XCTestCase {
     }
     
     func testSigmoidDerivativeGPU() {
-        MLSetComputeMode(.GPU)
+        MLSetComputeMode(.gpu)
         let sigmoid = Sigmoid(name: "sig1")
         let m: Matrix = [[0,1], [2,3]]
         let res = sigmoid.applyDerivative(m)
@@ -70,7 +70,7 @@ class ActivationTests: XCTestCase {
     // MARK: - Tanh Tests
     
     func testTanhCPU() {
-        MLSetComputeMode(.CPU)
+        MLSetComputeMode(.cpu)
         let tanh_b = Tanh(name: "tanh1")
         let m: Matrix = [[0,1], [2,3]]
         let res = tanh_b.apply(m)
@@ -83,7 +83,7 @@ class ActivationTests: XCTestCase {
     }
     
     func testTanhGPU() {
-        MLSetComputeMode(.GPU)
+        MLSetComputeMode(.gpu)
         let tanh_b = Tanh(name: "tanh1")
         let m: Matrix = [[0,1], [2,3]]
         let res = tanh_b.apply(m)
@@ -96,7 +96,7 @@ class ActivationTests: XCTestCase {
     }
     
     func testTanhDerivativeCPU() {
-        MLSetComputeMode(.CPU)
+        MLSetComputeMode(.cpu)
         let tanh_b = Tanh(name: "tanh1")
         let m: Matrix = [[0,1], [2,3]]
         let res = tanh_b.applyDerivative(m)
@@ -110,7 +110,7 @@ class ActivationTests: XCTestCase {
     }
     
     func testTanhDerivativeGPU() {
-        MLSetComputeMode(.GPU)
+        MLSetComputeMode(.gpu)
         let tanh_b = Tanh(name: "tanh1")
         let m: Matrix = [[0,1], [2,3]]
         let res = tanh_b.applyDerivative(m)
@@ -127,7 +127,7 @@ class ActivationTests: XCTestCase {
     // MARK: - ReLU Tests
     
     func testReluCPU() {
-        MLSetComputeMode(.CPU)
+        MLSetComputeMode(.cpu)
         let relu = ReLU(name: "relu1")
         let m: Matrix = [[0,-1], [2,3]]
         let res = relu.apply(m)
@@ -143,7 +143,7 @@ class ActivationTests: XCTestCase {
     }
     
     func testReluGPU() {
-        MLSetComputeMode(.GPU)
+        MLSetComputeMode(.gpu)
         let relu = ReLU(name: "relu1")
         let m: Matrix = [[0,-1], [2,3]]
         let res = relu.apply(m)
@@ -159,7 +159,7 @@ class ActivationTests: XCTestCase {
     }
     
     func testReluDerivativeCPU() {
-        MLSetComputeMode(.CPU)
+        MLSetComputeMode(.cpu)
         let relu = ReLU(name: "relu1")
         let m: Matrix = [[0,1], [2,3]]
         let res = relu.applyDerivative(m)
@@ -171,7 +171,7 @@ class ActivationTests: XCTestCase {
     }
     
     func testReluDerivativeGPU() {
-        MLSetComputeMode(.GPU)
+        MLSetComputeMode(.gpu)
         let relu = ReLU(name: "relu1")
         let m: Matrix = [[0,1], [2,3]]
         let res = relu.applyDerivative(m)
@@ -186,7 +186,7 @@ class ActivationTests: XCTestCase {
     // MARK: - Softmax Tests
     
     func testSoftmaxCPU() {
-        MLSetComputeMode(.CPU)
+        MLSetComputeMode(.cpu)
         let softmax = Softmax(name: "softmax")
         let m: Matrix = [[0,1], [2,3]]
         let m_exp = m.exp()
@@ -199,7 +199,7 @@ class ActivationTests: XCTestCase {
     }
     
     func testSoftmaxGPU() {
-        MLSetComputeMode(.GPU)
+        MLSetComputeMode(.gpu)
         let softmax = Softmax(name: "softmax")
         let m: Matrix = [[0,1], [2,3]]
         let m_exp = m.exp()
